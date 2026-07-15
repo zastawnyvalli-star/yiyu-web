@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>忆语安康网页版</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="./logo.jpg" alt="忆语安康">
+      <div>
+        <h1>忆语安康</h1>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span id="apiStatus" class="status-pill">本地模式</span>
+      <button id="fontToggle" class="ghost">适老字体</button>
+    </div>
+  </header>
+  <div class="disclaimer-bar">
+    <span>!</span>
+    <p>本工具仅作为认知健康初筛参考，不代表临床诊断；请像平常聊天一样回答，不用紧张。</p>
+  </div>
+
+  <main>
+    <section id="authView" class="view auth">
+      <div class="intro">
+        <img src="./logo.jpg" alt="忆语安康">
+        <h2>您的专属记忆健康守护者</h2>
+        <p>保留小程序的登录、档案、语音筛查、报告、趋势、门诊导航和个人中心流程。</p>
+        <div class="chips">
+          <span>微信授权</span><span>手机号登录</span><span>语音识别</span><span>报告分享</span><span>记忆门诊</span>
+        </div>
+      </div>
+
+      <form id="profileForm" class="panel form">
+        <h2>登录并完善档案</h2>
+        <div class="login-row">
+          <button type="button" data-login="wechat">微信一键授权</button>
+          <button type="button" data-login="phone">手机号登录</button>
+        </div>
+        <label>姓名<input name="name" required placeholder="请输入姓名"></label>
+        <div class="grid2">
+          <label>性别<select name="gender" required><option value="">请选择</option><option>男</option><option>女</option></select></label>
+          <label>出生日期<input name="birthDate" type="date" required></label>
+        </div>
+        <label>受教育程度<select name="education" required><option value="">请选择</option><option>小学及以下</option><option>初中</option><option>高中/中专</option><option>大专</option><option>本科及以上</option></select></label>
+        <label>常用方言<select name="dialect"><option>普通话</option><option>粤语</option><option>四川话</option><option>东北话</option><option>上海话</option><option>闽南语</option><option>山西话</option><option>其他</option></select></label>
+        <label>亲情账号<input name="familyAccount" type="tel" placeholder="可选，填写家属手机号"></label>
+        <button class="primary">保存并开启评估</button>
+      </form>
+    </section>
+
+    <section id="screeningView" class="view hidden">
+      <div class="screen">
+        <aside class="panel side">
+          <h2>语音筛查</h2>
+          <p>半结构化 8 轮对话：饮食、活动、睡眠、情绪、记忆、社交、家庭、生活规律。</p>
+          <div class="progress">
+            <div><span>进度</span><b id="progressText">0 / 8</b></div>
+            <div class="progress-track"><i id="progressFill"></i></div>
+          </div>
+          <p id="recordSupport" class="support-note"></p>
+          <button id="restartBtn" class="ghost">重新筛查</button>
+        </aside>
+        <section class="panel chat">
+          <div id="voiceCoach" class="voice-coach">
+            <div class="voice-coach-card">
+              <p class="coach-label">现在可以开始回答</p>
+              <button id="heroRecordBtn" class="hero-mic" type="button" aria-label="开始语音回答">🎙</button>
+              <p id="coachStatus">点击麦克风，说完后会自动转成文字，您可以先看一眼再发送。</p>
+            </div>
+          </div>
+          <div id="chatMessages" class="messages"></div>
+          <div id="recordingHint" class="recording hidden">正在聆听...</div>
+          <form id="messageForm" class="composer">
+            <button id="recordBtn" type="button" aria-label="语音输入">🎙</button>
+            <textarea id="messageInput" rows="2" placeholder="识别出的文字会显示在这里，您可以修改后再发送"></textarea>
+            <button id="rerecordBtn" class="ghost hidden" type="button">重录</button>
+            <button id="cancelRecordBtn" class="ghost hidden" type="button">取消</button>
+            <button class="primary">发送</button>
+          </form>
+        </section>
+      </div>
+    </section>
+
+    <section id="reportView" class="view hidden">
+      <div id="reportEmpty" class="panel empty">
+        <h2>暂无筛查记录</h2>
+        <p>完成语音筛查后将在此显示报告。</p>
+        <button class="primary" data-nav="screening">开始筛查</button>
+      </div>
+      <div id="reportContent" class="hidden">
+        <div class="panel report-head">
+          <div>
+            <b class="warn">本评估仅作为初始筛查参考，不提供临床诊断</b>
+            <h2>筛查报告</h2>
+            <p id="reportDate"></p>
+            <p id="riskHint"></p>
+          </div>
+          <div class="score"><strong id="totalScore">--</strong><span id="riskText">--</span></div>
+        </div>
+        <div class="cards">
+          <article class="panel wide voice-summary"><div class="section-title-row"><h3>语音解读</h3><button id="playSummaryBtn" class="primary big-play">播放解读</button></div><p id="elderVoiceText"></p></article>
+          <article class="panel"><h3>行动建议</h3><p id="actionAdvice"></p><ol id="actionSteps"></ol></article>
+          <article class="panel"><h3>能力评估</h3><p>表达力：<b id="expressionScore"></b></p><p>思维连贯性：<b id="logicScore"></b></p></article>
+          <article class="panel wide"><h3>三维度分析</h3><div id="dimensionBars" class="bars"></div></article>
+          <article class="panel wide"><h3>9 项子指标</h3><div id="subItemScores" class="subgrid"></div></article>
+          <article class="panel wide"><h3>观察点与建议</h3><ul id="observations"></ul><ul id="suggestions"></ul></article>
+          <article class="panel wide">
+            <h3>附近记忆门诊</h3>
+            <div class="clinic-search">
+              <input id="clinicCityInput" placeholder="输入城市，如太原、北京、上海">
+              <button id="clinicSearchBtn" class="primary">搜索</button>
+              <button id="clinicLocateBtn" class="ghost" type="button">定位</button>
+            </div>
+            <div id="clinicList"></div>
+          </article>
+        </div>
+        <div class="actions">
+          <button id="shareReportBtn" class="ghost">分享家人</button>
+          <button id="exportReportBtn" class="ghost">导出报告</button>
+          <button class="ghost" data-nav="history">历史趋势</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="historyView" class="view hidden">
+      <div class="head-row"><h2>历史评分趋势</h2><div class="periods"><button data-period="7">7天</button><button data-period="30">30天</button><button data-period="90">90天</button></div></div>
+      <div class="panel"><canvas id="trendChart" width="900" height="320"></canvas></div>
+      <div id="historyList" class="history"></div>
+    </section>
+
+    <section id="mineView" class="view hidden">
+      <div class="panel mine"><div class="avatar">忆</div><div><h2 id="mineName">请先登录</h2><p id="mineProfile">个人信息</p></div></div>
+      <div class="panel api-settings">
+        <h3>Web 接口</h3>
+        <div class="clinic-search">
+          <input id="apiBaseInput" placeholder="后端地址，可留空使用本地模式">
+          <button id="saveApiBaseBtn" class="primary" type="button">保存</button>
+        </div>
+        <p id="apiBaseHint" class="muted"></p>
+      </div>
+      <div class="panel menu">
+        <button id="editProfileBtn">修改个人信息 <span>编辑资料</span></button>
+        <button data-nav="history">历史评估记录 <span>趋势分析</span></button>
+        <button id="mineClinicBtn">导航到记忆门诊 <span>查找附近医院</span></button>
+        <button id="aboutBtn">关于我们 <span>了解更多</span></button>
+        <button id="clearDataBtn">退出登录/清空数据 <span>重置</span></button>
+      </div>
+      <p class="foot">语音筛查 v1.0.0 · 亲情账号：<span id="familyInfo">未绑定</span></p>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="active" data-nav="screening">筛查</button>
+    <button data-nav="report">报告</button>
+    <button data-nav="history">趋势</button>
+    <button data-nav="mine">我的</button>
+  </nav>
+
+  <script src="./app.js"></script>
+</body>
+</html>
