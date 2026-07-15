@@ -209,6 +209,15 @@ input, select { width: 100%; height: 48px; border: 1px solid var(--line); border
   font-weight: 900;
   text-align: center;
 }
+.report-actions {
+  width: 100%;
+  max-width: none;
+  align-self: stretch;
+}
+.report-actions .ghost {
+  display: block;
+  min-width: 0;
+}
 
 .clinic-search { display: grid; grid-template-columns: 1fr 90px auto; gap: 10px; margin-bottom: 12px; }
 .clinic-item { border-top: 1px solid var(--line); padding: 14px 0; }
