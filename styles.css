@@ -157,7 +157,18 @@ input, select { width: 100%; height: 48px; border: 1px solid var(--line); border
 .empty { min-height: 420px; display: grid; place-items: center; align-content: center; gap: 12px; text-align: center; }
 .report-head { margin-bottom: 18px; }
 .warn { color: var(--red); }
-.score { width: 168px; height: 168px; border-radius: 50%; display: grid; place-items: center; align-content: center; border: 14px solid #ccfbf1; }
+.score {
+  width: 168px;
+  height: 168px;
+  min-width: 168px;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 168px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  border: 14px solid #ccfbf1;
+}
 .score strong { font-size: 36px; }
 .cards { grid-template-columns: 1fr; }
 .wide { grid-column: 1 / -1; }
