@@ -3,6 +3,7 @@ import os
 import tempfile
 
 import edge_tts
+from aip import AipSpeech
 from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
 
@@ -11,6 +12,10 @@ app = Flask(__name__)
 CORS(app)
 
 DEFAULT_VOICE = "zh-CN-XiaoxiaoNeural"
+BAIDU_APP_ID = os.environ.get("BAIDU_APP_ID", "27580703")
+BAIDU_API_KEY = os.environ.get("BAIDU_API_KEY", "t6P4PgHeEMB9toRHunzITJ92")
+BAIDU_SECRET_KEY = os.environ.get("BAIDU_SECRET_KEY", "0yFT4gNBTDhKgAGX5HBExeIWenLdRmYL")
+baidu_client = AipSpeech(BAIDU_APP_ID, BAIDU_API_KEY, BAIDU_SECRET_KEY)
 
 
 @app.get("/")
@@ -42,6 +47,43 @@ def tts():
         )
     except Exception as exc:
         return jsonify({"success": False, "error": str(exc)}), 500
+
+
+@app.post("/api/speech-to-text")
+def speech_to_text():
+    audio_file = request.files.get("audio") or request.files.get("file")
+    if not audio_file:
+        return jsonify({"success": False, "error": "audio file is required"}), 400
+
+    audio_data = audio_file.read()
+    audio_format = (request.form.get("format") or "wav").lower()
+    rate = int(request.form.get("rate") or 16000)
+
+    if audio_format.startswith("audio/"):
+        audio_format = audio_format.split("/", 1)[1]
+    if audio_format == "x-wav":
+        audio_format = "wav"
+
+    try:
+        result = baidu_client.asr(audio_data, audio_format, rate, {
+            "dev_pid": 1537,
+            "channel": 1,
+        })
+        if result.get("err_no") == 0:
+            return jsonify({
+                "success": True,
+                "text": "".join(result.get("result", [])),
+                "raw_result": result.get("result", []),
+                "sn": result.get("sn", ""),
+            })
+        return jsonify({
+            "success": False,
+            "text": "",
+            "error": result.get("err_msg", "speech recognition failed"),
+            "err_no": result.get("err_no"),
+        }), 422
+    except Exception as exc:
+        return jsonify({"success": False, "text": "", "error": str(exc)}), 500
 
 
 async def synthesize(text, voice):
