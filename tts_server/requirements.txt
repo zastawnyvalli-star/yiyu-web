@@ -3,3 +3,4 @@ flask-cors>=4.0.0
 edge-tts>=6.1.12
 gunicorn>=21.2.0
 baidu-aip>=4.0.0
+chardet>=5.2.0
