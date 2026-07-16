@@ -483,6 +483,12 @@ body {
   border-radius: 50%;
   opacity: .72;
 }
+.speak.playing {
+  background: #fef2f2;
+  color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, .12);
+  opacity: 1;
+}
 
 .recording {
   margin: 0 30px 12px;
