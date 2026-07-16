@@ -532,6 +532,19 @@ body {
   border-color: #5ba3c6;
 }
 
+.composer textarea.pending-text {
+  min-height: 58px;
+  color: #047857;
+  background: #ecfdf5;
+  border-color: #34d399;
+  text-align: center;
+  font-weight: 800;
+  line-height: 58px;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
 #recordBtn {
   width: 64px;
   height: 64px;
