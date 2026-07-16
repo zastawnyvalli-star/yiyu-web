@@ -36,4 +36,5 @@ async function toggleVoiceInput(){if(!rec)return alert("当前浏览器不支持
 $("#recordBtn").onclick=toggleVoiceInput;
 $("#rerecordBtn").onclick=()=>{$("#messageInput").value="";updateTranscriptControls();toggleVoiceInput()};
 $("#messageInput").addEventListener("input",updateTranscriptControls);
+$("#messageInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#messageForm").requestSubmit()}});
 $("#messageForm").onsubmit=e=>{e.preventDefault();send($("#messageInput").value);$("#messageInput").value="";updateTranscriptControls()};
