@@ -135,10 +135,15 @@
       <div class="panel api-settings">
         <h3>Web 接口</h3>
         <div class="clinic-search">
-          <input id="apiBaseInput" placeholder="后端地址，可留空使用本地模式">
+          <input id="apiBaseInput" placeholder="语音接口地址，如 https://yiyu-tts.onrender.com">
           <button id="saveApiBaseBtn" class="primary" type="button">保存</button>
         </div>
         <p id="apiBaseHint" class="muted"></p>
+        <div class="clinic-search">
+          <input id="agentBaseInput" placeholder="智能体接口地址，如 http://127.0.0.1:8899">
+          <button id="saveAgentBaseBtn" class="primary" type="button">保存</button>
+        </div>
+        <p id="agentBaseHint" class="muted"></p>
       </div>
       <div class="panel menu">
         <button id="editProfileBtn">修改个人信息 <span>编辑资料</span></button>
