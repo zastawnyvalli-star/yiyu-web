@@ -157,6 +157,10 @@ input, select { width: 100%; height: 48px; border: 1px solid var(--line); border
 .composer button:first-child { font-size: 22px; }
 .composer-text { display: grid; gap: 6px; min-width: 0; }
 .composer-hint { color: var(--muted); font-size: 14px; line-height: 1.45; text-align: left; }
+.noise-hint { margin: 0; padding: 8px 10px; border-radius: 8px; font-size: 15px; line-height: 1.4; font-weight: 700; }
+.noise-hint.ok { color: #047857; background: #ecfdf5; }
+.noise-hint.warn { color: #92400e; background: #fffbeb; }
+.noise-hint.bad { color: #b91c1c; background: #fef2f2; }
 
 .empty { min-height: 420px; display: grid; place-items: center; align-content: center; gap: 12px; text-align: center; }
 .report-head { margin-bottom: 18px; }
