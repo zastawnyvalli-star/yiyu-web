@@ -549,6 +549,12 @@ body {
   overflow: hidden;
 }
 
+.composer textarea.voice-locked {
+  background: #f8fafc;
+  color: #334155;
+  cursor: not-allowed;
+}
+
 #recordBtn {
   width: 64px;
   height: 64px;
