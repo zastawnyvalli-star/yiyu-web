@@ -1,1 +1,5 @@
 yiyu-web-deploy.zip
+.env
+.venv/
+__pycache__/
+*.py[cod]
