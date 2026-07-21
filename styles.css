@@ -1634,7 +1634,7 @@ body[data-active="auth"] #authView::before {
   grid-column: 1;
   grid-row: 1;
   background:
-    linear-gradient(135deg, rgba(49, 88, 226, .88), rgba(50, 108, 226, .82)),
+    linear-gradient(135deg, rgba(91, 163, 198, .92) 0%, rgba(107, 181, 200, .9) 48%, rgba(119, 196, 184, .92) 100%),
     url("./logo.jpg");
   background-size: cover, 420px;
   background-position: center, center;
@@ -1775,7 +1775,7 @@ body[data-active="auth"] #authView label {
   body[data-active="auth"] #authView {
     grid-template-columns: 1fr;
     background:
-      linear-gradient(135deg, rgba(49, 88, 226, .88), rgba(50, 108, 226, .82));
+      linear-gradient(135deg, rgba(91, 163, 198, .92) 0%, rgba(107, 181, 200, .9) 48%, rgba(119, 196, 184, .92) 100%);
     padding: 28px 18px;
   }
 
