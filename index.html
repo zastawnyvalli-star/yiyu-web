@@ -68,6 +68,14 @@
         </aside>
         <section class="panel chat">
           <div id="chatMessages" class="messages"></div>
+          <div id="recordingStage" class="recording-stage hidden">
+            <button id="recordStageBtn" class="record-stage-mic" type="button" aria-label="结束录音">
+              <span class="mic-symbol">🎙</span>
+              <span class="pause-symbol">Ⅱ</span>
+            </button>
+            <p>正在录音...</p>
+            <button id="recordStageCancelBtn" class="ghost" type="button">取消本次录音</button>
+          </div>
           <div id="recordingHint" class="recording hidden">正在聆听...</div>
           <form id="messageForm" class="composer">
             <button id="recordBtn" type="button" aria-label="语音输入">🎙</button>
@@ -159,6 +167,7 @@
   </main>
 
   <nav class="tabbar">
+    <button id="navCollapseBtn" class="nav-collapse" type="button" aria-label="收起导航">‹</button>
     <button class="active" data-nav="screening">筛查</button>
     <button data-nav="report">报告</button>
     <button data-nav="history">趋势</button>

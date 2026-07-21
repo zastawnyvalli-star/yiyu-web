@@ -1984,3 +1984,213 @@ body[data-active="auth"] #authView .grid2 {
     font-size: 28px;
   }
 }
+
+/* Recording focus page and collapsible left navigation */
+.recording-stage {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  padding: clamp(52px, 12vh, 150px) 24px;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 167, 181, .16), transparent 12rem),
+    linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
+}
+
+.record-stage-mic {
+  position: relative;
+  width: 148px;
+  height: 148px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: #ff6670;
+  font-size: 58px;
+  box-shadow:
+    0 0 0 8px rgba(255, 167, 181, .18),
+    0 0 0 16px rgba(255, 167, 181, .12),
+    0 18px 44px rgba(255, 102, 112, .18);
+}
+
+.record-stage-mic::before,
+.record-stage-mic::after {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  border: 2px solid rgba(255, 167, 181, .42);
+  border-radius: 50%;
+  animation: recordPulse 1.8s ease-out infinite;
+}
+
+.record-stage-mic::after {
+  animation-delay: .55s;
+}
+
+.pause-symbol {
+  position: absolute;
+  right: -12px;
+  bottom: 10px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 4px solid #fff;
+  background: #fff8e8;
+  color: #f3ad2f;
+  font-size: 25px;
+  font-weight: 950;
+  box-shadow: 0 8px 22px rgba(217, 146, 46, .22);
+}
+
+.recording-stage p {
+  color: #50616f;
+  font-size: 34px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.recording-stage .ghost {
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+}
+
+@keyframes recordPulse {
+  0% { transform: scale(.86); opacity: .72; }
+  100% { transform: scale(1.18); opacity: 0; }
+}
+
+body.recording-now #screeningView .messages,
+body.recording-now #screeningView .composer,
+body.recording-now #screeningView #recordingHint {
+  display: none !important;
+}
+
+body.recording-now #screeningView .chat {
+  grid-template-rows: minmax(0, 1fr);
+  background: #fff;
+}
+
+@media (min-width: 1040px) {
+  body:not([data-active="auth"]) .tabbar {
+    left: 0;
+    top: 0;
+    bottom: auto;
+    width: 248px;
+    height: 100vh;
+    padding: 82px 0 18px;
+    gap: 4px;
+    transform: none;
+    border: 0;
+    border-radius: 0;
+    background: #1f3b4b;
+    box-shadow: 18px 0 44px rgba(18, 52, 67, .18);
+    backdrop-filter: none;
+  }
+
+  body:not([data-active="auth"]) .tabbar button {
+    min-height: 56px;
+    margin: 0;
+    padding: 0 22px;
+    border-radius: 0;
+    justify-content: flex-start;
+    color: rgba(232, 246, 250, .82);
+    font-size: 18px;
+    font-weight: 800;
+    gap: 14px;
+  }
+
+  body:not([data-active="auth"]) .tabbar button::before {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(232, 246, 250, .68);
+    background: transparent;
+  }
+
+  body:not([data-active="auth"]) .tabbar button:hover {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+  }
+
+  body:not([data-active="auth"]) .tabbar button.active {
+    transform: none;
+    background: rgba(91, 163, 198, .18);
+    color: #78d8ef;
+    box-shadow: inset 4px 0 0 #5ba3c6;
+  }
+
+  body:not([data-active="auth"]) .tabbar button.active::before {
+    border-color: #78d8ef;
+    background: #78d8ef;
+  }
+
+  body:not([data-active="auth"]) .tabbar .nav-collapse {
+    position: absolute;
+    top: 18px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,.1);
+    color: #fff;
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  body:not([data-active="auth"]) .tabbar .nav-collapse::before {
+    display: none;
+  }
+
+  body:not([data-active="auth"]) .topbar,
+  body:not([data-active="auth"]) .disclaimer-bar,
+  body:not([data-active="auth"]) .view {
+    margin-left: 280px;
+    margin-right: auto;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .tabbar {
+    width: 76px;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .tabbar button:not(.nav-collapse) {
+    width: 76px;
+    padding: 0;
+    justify-content: center;
+    font-size: 0;
+    gap: 0;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .tabbar .nav-collapse {
+    right: 18px;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .topbar,
+  body.nav-collapsed:not([data-active="auth"]) .disclaimer-bar,
+  body.nav-collapsed:not([data-active="auth"]) .view {
+    margin-left: 108px;
+  }
+}
+
+@media (max-width: 1039px) {
+  .tabbar .nav-collapse {
+    display: none;
+  }
+
+  .record-stage-mic {
+    width: 124px;
+    height: 124px;
+    font-size: 48px;
+  }
+
+  .recording-stage p {
+    font-size: 28px;
+  }
+}
