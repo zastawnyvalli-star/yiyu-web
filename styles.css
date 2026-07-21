@@ -117,6 +117,7 @@ button { cursor: pointer; }
 .form, .side { display: grid; gap: 14px; }
 label { display: grid; gap: 7px; font-weight: 700; color: #334155; }
 input, select { width: 100%; height: 48px; border: 1px solid var(--line); border-radius: 8px; padding: 0 13px; background: white; }
+input[readonly] { background: #f8fafc; color: #64748b; cursor: default; }
 .grid2, .login-row, .screen, .cards { display: grid; gap: 14px; }
 .grid2, .login-row { grid-template-columns: 1fr 1fr; }
 .screen { grid-template-columns: 320px 1fr; }
