@@ -579,7 +579,10 @@ body {
 }
 
 @media (min-width: 821px) {
-  body:not(.elderly) #screeningView {
+  body:not(.elderly) #screeningView,
+  body:not(.elderly) #reportView,
+  body:not(.elderly) #historyView,
+  body:not(.elderly) #mineView {
     height: calc(100vh - 190px);
     min-height: 520px;
     padding-bottom: 0;
@@ -671,9 +674,149 @@ body {
     height: 50px;
     font-size: 18px;
   }
+
+  body:not(.elderly) #reportView #reportContent,
+  body:not(.elderly) #historyView,
+  body:not(.elderly) #mineView {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  body:not(.elderly) #reportView #reportContent {
+    max-height: 100%;
+    padding-right: 6px;
+  }
+
+  body:not(.elderly) #reportView .report-head {
+    margin-bottom: 10px;
+    padding: 16px 20px;
+  }
+
+  body:not(.elderly) #reportView .report-head h2 {
+    font-size: 28px;
+  }
+
+  body:not(.elderly) #reportView .score {
+    width: 134px;
+    height: 134px;
+    min-width: 134px;
+  }
+
+  body:not(.elderly) #reportView .score strong {
+    font-size: 30px;
+  }
+
+  body:not(.elderly) #reportView .cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  body:not(.elderly) #reportView .cards .panel {
+    padding: 14px 18px;
+  }
+
+  body:not(.elderly) #reportView .cards .panel h3 {
+    margin-bottom: 8px;
+    font-size: 19px;
+  }
+
+  body:not(.elderly) #reportView .wide {
+    grid-column: auto;
+  }
+
+  body:not(.elderly) #reportView .voice-summary,
+  body:not(.elderly) #reportView .action-card,
+  body:not(.elderly) #reportView .cards .panel:last-child {
+    grid-column: 1 / -1;
+  }
+
+  body:not(.elderly) #reportView .subgrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  body:not(.elderly) #reportView .sub-score {
+    padding: 9px 12px;
+  }
+
+  body:not(.elderly) #reportView .cards li + li {
+    margin-top: 3px;
+  }
+
+  body:not(.elderly) #reportView .clinic-search,
+  body:not(.elderly) #mineView .clinic-search {
+    margin-bottom: 8px;
+  }
+
+  body:not(.elderly) #reportView .clinic-item {
+    padding: 9px 0;
+  }
+
+  body:not(.elderly) #reportView .report-actions {
+    margin-top: 10px;
+  }
+
+  body:not(.elderly) #historyView {
+    padding-right: 6px;
+  }
+
+  body:not(.elderly) #historyView .head-row {
+    margin-bottom: 10px;
+  }
+
+  body:not(.elderly) #historyView .head-row h2 {
+    font-size: 28px;
+  }
+
+  body:not(.elderly) #historyView .panel {
+    padding: 14px 18px;
+  }
+
+  body:not(.elderly) #historyView canvas {
+    width: 100%;
+    height: 240px;
+  }
+
+  body:not(.elderly) #historyView .history {
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  body:not(.elderly) #historyView .history-item {
+    padding: 12px 14px;
+  }
+
+  body:not(.elderly) #mineView {
+    padding-right: 6px;
+  }
+
+  body:not(.elderly) #mineView .mine {
+    padding: 16px 20px;
+    margin-bottom: 10px;
+  }
+
+  body:not(.elderly) #mineView .api-settings {
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+
+  body:not(.elderly) #mineView .menu {
+    padding: 4px 8px;
+  }
+
+  body:not(.elderly) #mineView .menu button {
+    min-height: 48px;
+  }
+
+  body:not(.elderly) #mineView .foot {
+    padding-bottom: 8px;
+  }
 }
 
-.elderly #screeningView {
+.elderly #screeningView,
+.elderly #reportView,
+.elderly #historyView,
+.elderly #mineView {
   height: auto;
   min-height: 0;
   overflow: visible;
