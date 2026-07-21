@@ -1486,3 +1486,102 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* Auth-only layout: one large centered background, no left navigation */
+body[data-active="auth"] .tabbar {
+  display: none;
+}
+
+@media (min-width: 1040px) {
+  body[data-active="auth"] .topbar,
+  body[data-active="auth"] .disclaimer-bar,
+  body[data-active="auth"] .view {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+body[data-active="auth"] .topbar {
+  max-width: 1060px;
+}
+
+body[data-active="auth"] .disclaimer-bar {
+  max-width: 1060px;
+}
+
+body[data-active="auth"] #authView {
+  max-width: 1060px;
+  min-height: calc(100vh - 218px);
+  padding: clamp(34px, 6vh, 70px) 24px 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 0 0 24px 24px;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(91, 163, 198, .14), transparent 22rem),
+    linear-gradient(180deg, rgba(248, 253, 253, .92), rgba(238, 248, 249, .96));
+  border: 1px solid rgba(198, 221, 228, .72);
+  border-top: 0;
+  box-shadow: 0 24px 64px rgba(56, 110, 132, .14);
+}
+
+body[data-active="auth"] #authView.auth {
+  grid-template-columns: minmax(0, 620px);
+  align-content: center;
+  justify-content: center;
+}
+
+body[data-active="auth"] #authView .login-panel,
+body[data-active="auth"] #authView .profile-panel {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  border-radius: 18px;
+  border: 1px solid rgba(183, 220, 229, .95);
+  border-top: 5px solid #5ba3c6;
+  box-shadow: 0 28px 70px rgba(38, 96, 121, .18);
+}
+
+body[data-active="auth"] #authView .login-panel {
+  min-height: 380px;
+  padding: 42px 54px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.99), rgba(249,253,253,.98));
+}
+
+body[data-active="auth"] #authView .profile-panel {
+  padding: 32px 38px;
+  background: rgba(255,255,255,.98);
+}
+
+body[data-active="auth"] #authView .login-panel::before,
+body[data-active="auth"] #authView .profile-panel::before {
+  width: 0;
+}
+
+body[data-active="auth"] .auth-mark {
+  transform: translateY(-2px);
+}
+
+body[data-active="auth"] #authView .login-panel h2 {
+  margin-top: 12px;
+}
+
+body[data-active="auth"] #authView .login-panel .login-row {
+  margin-top: 18px;
+}
+
+body[data-active="auth"] #authView .login-panel .login-row button {
+  min-height: 60px;
+}
+
+@media (max-width: 820px) {
+  body[data-active="auth"] #authView {
+    min-height: calc(100vh - 188px);
+    padding: 28px 14px 86px;
+    border-radius: 0;
+  }
+
+  body[data-active="auth"] #authView .login-panel,
+  body[data-active="auth"] #authView .profile-panel {
+    width: 100%;
+  }
+}
