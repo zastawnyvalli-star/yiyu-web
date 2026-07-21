@@ -3506,3 +3506,27 @@ body.elderly .dim-dot {
 body.elderly .dimension-dots {
   gap: 8px;
 }
+
+/* Keep adaptive progress readable in the compact desktop summary row. */
+@media (min-width: 1040px) {
+  body:not(.elderly) #screeningView .side .progress {
+    min-width: 0;
+    padding: 16px 18px;
+  }
+
+  body:not(.elderly) #screeningView .side .progress > div:first-child {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  body:not(.elderly) #screeningView .side #progressText {
+    min-width: 0;
+    font-size: 18px;
+    line-height: 1.35;
+    text-align: right;
+    white-space: normal;
+  }
+}

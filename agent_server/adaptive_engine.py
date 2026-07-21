@@ -26,7 +26,7 @@ def should_continue(session: SessionState) -> Tuple[bool, str, float, float]:
 
     Returns: (should_continue, reason, coverage, confidence)
     """
-    current_round = session.round
+    current_round = len(session.answers)
 
     # Recalculate coverage and confidence
     coverage = calculate_coverage(session)
@@ -159,7 +159,7 @@ def select_next_dimension(session: SessionState) -> str:
     2. For rounds 8+: pick weakest covered dimension
     3. For rounds 10+: prioritize dimensions with contradictions
     """
-    current_round = session.round
+    current_round = len(session.answers)
 
     # Rounds 1-7: systematic coverage
     if current_round < len(INITIAL_DIMENSION_ORDER):

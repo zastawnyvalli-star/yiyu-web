@@ -76,3 +76,11 @@ $("#navCollapseBtn").onclick=()=>{state.sidebarCollapsed=!state.sidebarCollapsed
 $("#messageInput").addEventListener("input",()=>{if($("#messageInput").value!=="请稍后")setMessagePending(false);if(!pendingAudioUrl)lockVoiceText(false);updateTranscriptControls()});
 $("#messageInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#messageForm").requestSubmit()}});
 $("#messageForm").onsubmit=e=>{e.preventDefault();send($("#messageInput").value,pendingAudioUrl);$("#messageInput").value="";setMessagePending(false);lockVoiceText(false);pendingAudioUrl="";pendingAudioBlob=null;const audio=$("#pendingAudioPreview");if(audio){audio.removeAttribute("src");audio.classList.add("hidden")}updateTranscriptControls()};
+
+const runCompleteScreening=complete;
+complete=async function(agentResult){const answered=state.screening.answers.length,minRounds=state.screening.totalMinRounds||10;if(answered<minRounds){state.screening.done=false;state.screening.completionNote="";const nextQuestion=getFallbackQuestion(state.screening);state.screening.messages.push(["ai",nextQuestion]);save();renderChat();autoSpeak(nextQuestion);return}return runCompleteScreening(agentResult)};
+
+const runBeginScreening=beginScreening;
+beginScreening=async function(){state.screening=fresh().screening;state.report=null;save();return runBeginScreening()};
+
+if(state.screening?.done&&state.screening.answers.length<(state.screening.totalMinRounds||10)){state.screening.done=false;state.screening.completionNote="";state.screening.messages=state.screening.messages.filter(m=>!(m[0]==="ai"&&/整理成一份简单报告|报告已经整理好了|我来把这些内容整理成报告/.test(m[1])));state.screening.messages.push(["ai",getFallbackQuestion(state.screening)]);state.report=null;save();render()}
