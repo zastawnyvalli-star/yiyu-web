@@ -21,6 +21,7 @@ body {
   line-height: 1.55;
   letter-spacing: 0;
 }
+
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 
@@ -2473,5 +2474,133 @@ body.recording-now #screeningView .chat {
   body.nav-collapsed:not([data-active="auth"]) .tabbar button:not(.nav-collapse) {
     min-height: 76px;
     padding-left: 0;
+  }
+}
+
+/* Full-width desktop shell with a compact reference-style sidebar */
+@media (min-width: 1040px) {
+  body:not([data-active="auth"]),
+  body.nav-collapsed:not([data-active="auth"]) {
+    min-height: 100vh;
+    background: #f4f9fa;
+  }
+
+  body:not([data-active="auth"]) .tabbar {
+    width: 220px;
+    padding: 74px 0 18px;
+    align-content: start;
+    box-shadow: none;
+  }
+
+  body:not([data-active="auth"]) .tabbar::before {
+    top: 25px;
+    left: 22px;
+    font-size: 18px;
+  }
+
+  body:not([data-active="auth"]) .tabbar button:not(.nav-collapse) {
+    min-height: 58px;
+    padding: 0 20px;
+    gap: 12px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  body:not([data-active="auth"]) .tabbar button:not(.nav-collapse)::before {
+    width: 16px;
+    height: 16px;
+  }
+
+  body:not([data-active="auth"]) .tabbar .nav-collapse {
+    top: 17px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  body:not([data-active="auth"]) .topbar,
+  body:not([data-active="auth"]) .disclaimer-bar,
+  body:not([data-active="auth"]) .view {
+    width: calc(100vw - 220px);
+    max-width: none;
+    margin-left: 220px;
+    margin-right: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  body:not([data-active="auth"]) .topbar {
+    margin-top: 0;
+    min-height: 112px;
+    padding: 18px 30px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  body:not([data-active="auth"]) .brand img {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+  }
+
+  body:not([data-active="auth"]) .brand h1 {
+    font-size: 50px;
+  }
+
+  body:not([data-active="auth"]) .disclaimer-bar {
+    min-height: 58px;
+  }
+
+  body:not([data-active="auth"]) .view {
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #screeningView {
+    height: calc(100vh - 170px);
+  }
+
+  body:not(.elderly) #screeningView .screen {
+    border-radius: 0;
+  }
+
+  body:not([data-active="auth"]) #screeningView,
+  body:not([data-active="auth"]) #reportView,
+  body:not([data-active="auth"]) #historyView,
+  body:not([data-active="auth"]) #mineView {
+    border-radius: 0;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .tabbar {
+    width: 72px;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .tabbar .nav-collapse {
+    right: 16px;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .tabbar button:not(.nav-collapse) {
+    width: 72px;
+    min-height: 58px;
+    padding: 0;
+  }
+
+  body.nav-collapsed:not([data-active="auth"]) .topbar,
+  body.nav-collapsed:not([data-active="auth"]) .disclaimer-bar,
+  body.nav-collapsed:not([data-active="auth"]) .view {
+    width: calc(100vw - 72px);
+    margin-left: 72px;
   }
 }
