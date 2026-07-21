@@ -579,6 +579,7 @@ body {
 }
 
 @media (min-width: 821px) {
+  body:not(.elderly) #authView,
   body:not(.elderly) #screeningView,
   body:not(.elderly) #reportView,
   body:not(.elderly) #historyView,
@@ -587,6 +588,66 @@ body {
     min-height: 520px;
     padding-bottom: 0;
     overflow: hidden;
+  }
+
+  body:not(.elderly) #authView {
+    grid-template-columns: .9fr 1.1fr;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  body:not(.elderly) #authView .intro,
+  body:not(.elderly) #authView .form {
+    min-height: 0;
+    padding: 22px 28px;
+  }
+
+  body:not(.elderly) #authView .intro {
+    justify-content: center;
+    gap: 14px;
+  }
+
+  body:not(.elderly) #authView .intro h2,
+  body:not(.elderly) #authView .form h2 {
+    font-size: 30px;
+  }
+
+  body:not(.elderly) #authView .intro p {
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  body:not(.elderly) #authView .chips {
+    gap: 8px;
+  }
+
+  body:not(.elderly) #authView .chips span {
+    padding: 8px 10px;
+  }
+
+  body:not(.elderly) #authView .form {
+    gap: 10px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  body:not(.elderly) #authView label {
+    gap: 5px;
+  }
+
+  body:not(.elderly) #authView input,
+  body:not(.elderly) #authView select {
+    height: 42px;
+  }
+
+  body:not(.elderly) #authView .login-row,
+  body:not(.elderly) #authView .grid2 {
+    gap: 10px;
+  }
+
+  body:not(.elderly) #authView .primary,
+  body:not(.elderly) #authView .login-row button {
+    min-height: 42px;
   }
 
   body:not(.elderly) #screeningView .screen {
@@ -813,6 +874,7 @@ body {
   }
 }
 
+.elderly #authView,
 .elderly #screeningView,
 .elderly #reportView,
 .elderly #historyView,
