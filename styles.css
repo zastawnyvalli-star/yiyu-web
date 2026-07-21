@@ -1796,7 +1796,7 @@ body[data-active="auth"] #authView label {
 
 /* Source-code style auth page: animated dark gradient with centered glass card */
 body[data-active="auth"] {
-  background: linear-gradient(135deg, #1a2a4a 0%, #2c3e50 30%, #3a5068 60%, #4a6a82 100%);
+  background: linear-gradient(135deg, #5ba3c6 0%, #6bb5c8 48%, #77c4b8 100%);
 }
 
 body[data-active="auth"] #authView {
@@ -1808,10 +1808,10 @@ body[data-active="auth"] #authView {
   padding: 32px 18px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 8% 6%, rgba(91, 163, 198, .20), transparent 18rem),
-    radial-gradient(circle at 92% 88%, rgba(126, 200, 227, .18), transparent 16rem),
-    radial-gradient(circle at 54% 48%, rgba(137, 189, 213, .12), transparent 14rem),
-    linear-gradient(135deg, #1a2a4a 0%, #2c3e50 30%, #3a5068 60%, #4a6a82 100%);
+    radial-gradient(circle at 8% 6%, rgba(255,255,255,.20), transparent 18rem),
+    radial-gradient(circle at 92% 88%, rgba(255,255,255,.18), transparent 16rem),
+    radial-gradient(circle at 54% 48%, rgba(232, 250, 248, .18), transparent 14rem),
+    linear-gradient(135deg, #5ba3c6 0%, #6bb5c8 48%, #77c4b8 100%);
 }
 
 body[data-active="auth"] #authView::before,
@@ -1829,7 +1829,7 @@ body[data-active="auth"] #authView::before {
   height: 520px;
   left: -120px;
   top: -130px;
-  background: radial-gradient(circle, rgba(91, 163, 198, .18), transparent 68%);
+  background: radial-gradient(circle, rgba(255,255,255,.18), transparent 68%);
 }
 
 body[data-active="auth"] #authView::after {
@@ -1837,7 +1837,7 @@ body[data-active="auth"] #authView::after {
   height: 420px;
   right: -80px;
   bottom: -110px;
-  background: radial-gradient(circle, rgba(126, 200, 227, .16), transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,.16), transparent 70%);
 }
 
 body[data-active="auth"] #authView .login-panel,
