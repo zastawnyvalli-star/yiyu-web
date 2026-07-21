@@ -34,12 +34,18 @@
         </div>
       </div>
 
-      <form id="profileForm" class="panel form">
-        <h2>登录并完善档案</h2>
+      <div id="loginPanel" class="panel form login-panel">
+        <h2>登录</h2>
+        <p class="muted">先完成登录，再填写个人信息。</p>
         <div class="login-row">
           <button type="button" data-login="wechat">微信一键授权</button>
           <button type="button" data-login="phone">手机号登录</button>
         </div>
+      </div>
+
+      <form id="profileForm" class="panel form profile-panel hidden">
+        <h2>完善个人信息</h2>
+        <p class="muted">这些信息会用于生成更贴近个人情况的筛查报告。</p>
         <label>姓名<input name="name" required placeholder="请输入姓名"></label>
         <div class="grid2">
           <label>性别<select name="gender" required><option value="">请选择</option><option>男</option><option>女</option></select></label>

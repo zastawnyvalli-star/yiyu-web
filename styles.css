@@ -115,6 +115,13 @@ button { cursor: pointer; }
 .chips { display: flex; flex-wrap: wrap; gap: 10px; }
 .chips span { background: #ecfdf5; color: #115e59; padding: 10px 12px; border-radius: 8px; font-weight: 700; }
 .form, .side { display: grid; gap: 14px; }
+.login-panel {
+  align-content: center;
+}
+.login-panel .muted,
+.profile-panel .muted {
+  margin-top: -4px;
+}
 label { display: grid; gap: 7px; font-weight: 700; color: #334155; }
 input, select { width: 100%; height: 48px; border: 1px solid var(--line); border-radius: 8px; padding: 0 13px; background: white; }
 input[readonly] { background: #f8fafc; color: #64748b; cursor: default; }
