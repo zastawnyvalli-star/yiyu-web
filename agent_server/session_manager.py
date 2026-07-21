@@ -33,6 +33,8 @@ class SessionState:
     education_level: str = "secondary_low"
     # Forced end marker
     forced_end: bool = False
+    # All AI questions asked so far (for deduplication)
+    asked_questions: List[str] = field(default_factory=list)
     created_at: float = field(default_factory=time.time)
 
 

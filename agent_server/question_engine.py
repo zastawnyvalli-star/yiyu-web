@@ -2,12 +2,13 @@
 
 Two modes:
 1. LLM mode (primary): uses AI to generate natural, context-aware questions
-2. Fallback mode: uses template bank when LLM is unavailable
+2. Fallback mode: uses expanded template bank with deduplication
 
+All questions are tracked per session to prevent similar-meaning repeats.
 Education level is used ONLY to adjust question wording, never for scoring.
 """
 
-from typing import Optional
+from typing import Optional, List
 from session_manager import SessionState
 from config import (
     DIMENSIONS, INITIAL_DIMENSION_ORDER, MIN_ROUNDS,
@@ -16,23 +17,20 @@ from config import (
 from education_adapter import get_education_level, get_education_instruction
 from fallback_topics import (
     FALLBACK_QUESTIONS, FOLLOW_UP_QUESTIONS, CLARIFY_QUESTIONS, TOPIC_LABELS,
+    pick_unused_question, pick_unused_followup, _is_too_similar,
 )
 from coverage_tracker import classify_dimension
 from llm_client import get_llm_client
 
 
-# Track which fallback question index was used per dimension
-_dimension_question_index: dict = {}
-
-
 def generate_initial_question(session: SessionState) -> str:
     """Generate the very first question of the screening.
 
-    Uses education-appropriate opening message.
+    Records it in session.asked_questions for dedup tracking.
     """
     edu_level = session.education_level
-    # Use opening message if available for this education level
     opening = OPENING_MESSAGES.get(edu_level, OPENING_MESSAGES["secondary_low"])
+    session.asked_questions.append(opening)
     return opening
 
 
@@ -43,25 +41,24 @@ def generate_next_question(
 ) -> str:
     """Generate the next question for the given dimension.
 
-    Args:
-        session: Current session state with all history
-        target_dimension: Which dimension to ask about
-        llm_available: Whether LLM API is reachable
-
-    Returns:
-        A question string ready to display to the user
+    Uses deduplication to ensure no similar question is asked twice.
+    The generated question is automatically recorded in session.asked_questions.
     """
-    # Determine question type
     question_type = _determine_question_type(session)
+    asked = session.asked_questions
 
     if llm_available:
         try:
-            return _generate_llm_question(session, target_dimension, question_type)
+            q = _generate_llm_question(session, target_dimension, question_type, asked)
+            session.asked_questions.append(q)
+            return q
         except Exception:
-            pass  # Fall through to template mode
+            pass
 
-    # Fallback: use template bank
-    return _generate_fallback_question(session, target_dimension, question_type)
+    # Fallback: use expanded template bank with dedup
+    q = _generate_fallback_question(session, target_dimension, question_type, asked)
+    session.asked_questions.append(q)
+    return q
 
 
 def _determine_question_type(session: SessionState) -> str:
@@ -74,15 +71,12 @@ def _determine_question_type(session: SessionState) -> str:
 
     last = session.answers[-1]
 
-    # Check for contradictions needing clarification
     if session.contradictions and session.round >= MIN_ROUNDS:
         return "clarify"
 
-    # Check for short answers needing follow-up
     if last.get("length", len(last.get("text", ""))) <= 20:
         return "follow_up"
 
-    # Check if dimension is being revisited for depth
     dim = last.get("dimension", "")
     if dim and len(session.dimension_answers.get(dim, [])) >= 2:
         return "follow_up"
@@ -94,29 +88,34 @@ def _generate_llm_question(
     session: SessionState,
     target_dimension: str,
     question_type: str,
+    asked_questions: List[str],
 ) -> str:
-    """Generate question using LLM API."""
+    """Generate question using LLM API, with dedup instructions."""
     client = get_llm_client()
     if client is None:
         raise Exception("LLM client not configured")
 
-    # Build the prompt
     education_instruction = get_education_instruction(session.education_level)
-
-    # Summarize previous answers for context
     answer_summary = _build_answer_summary(session)
     dim_answers = _build_dimension_answer_summary(session, target_dimension)
 
-    # Determine type-specific instruction
+    # Build list of already-asked questions for the LLM to avoid
+    asked_list = "\n".join(f"- {q}" for q in asked_questions[-15:])  # last 15 for context
+    dedup_instruction = (
+        "重要：以下是你在这场对话中已经问过的问题，"
+        "新问题必须与这些问题完全不同，不能换一种说法问同一件事。\n"
+        f"{asked_list}\n"
+    )
+
     type_instruction = {
-        "continue": "自然地过渡到新话题，问题要像日常聊天一样。",
+        "continue": "自然地过渡到新话题，问题要像日常聊天一样。问一个你还没问过的具体方面。",
         "follow_up": (
             "针对这个维度进行深入追问。问题要具体，引导用户给出更多细节。"
-            "不要让对方觉得你在质疑或测试他。"
+            "不要让对方觉得你在质疑或测试他。问的角度要和之前不一样。"
         ),
         "clarify": (
             "温和地请用户澄清之前说法中不太一致的地方。"
-            "不要直接说'你前后矛盾'，而是自然地再问一次，给用户重新表达的机会。"
+            "不要直接说你前后矛盾，而是自然地再问一次，给用户重新表达的机会。"
         ),
     }.get(question_type, "")
 
@@ -126,12 +125,13 @@ def _generate_llm_question(
         "记忆、定向、语言表达、执行能力、情绪、睡眠、日常生活。"
         "\n\n"
         "重要原则：\n"
-        "1. 永远不要提及'测试'、'评估'、'筛查'、'诊断'等词\n"
+        "1. 永远不要提及测试、评估、筛查、诊断等词\n"
         "2. 问题要像家人朋友聊天一样自然\n"
         "3. 一次只问一个问题或一个主题\n"
-        "4. 尊重对方，用'您'称呼\n"
+        "4. 尊重对方，用您称呼\n"
         "5. 不要评判对方的回答\n"
-        "6. 每次只输出问题本身，不要加任何说明或前缀"
+        "6. 每个问题都必须和之前的完全不同，避免重复问相似的内容\n"
+        "7. 每次只输出问题本身，不要加任何说明或前缀"
     )
 
     user_prompt = (
@@ -141,6 +141,7 @@ def _generate_llm_question(
         f"教育背景适配要求：{education_instruction}\n\n"
         f"用户之前回答的维度总结：\n{answer_summary}\n\n"
         f"在「{target_dimension}」方面，用户之前说过：\n{dim_answers}\n\n"
+        f"{dedup_instruction}\n"
         f"{type_instruction}\n\n"
         f"请生成一个自然、温和的下一个问题。只输出问题文本，不要有任何其他内容。"
     )
@@ -184,28 +185,32 @@ def _generate_fallback_question(
     session: SessionState,
     target_dimension: str,
     question_type: str,
+    asked_questions: List[str],
 ) -> str:
-    """Generate question from template bank (LLM fallback)."""
-    # Clarification questions
+    """Generate question from expanded template bank with deduplication.
+
+    Uses pick_unused_question() which selects questions that:
+    1. Have not been asked before (exact match)
+    2. Are not too similar (keyword overlap < 45%) to any asked question
+    3. Falls back to least-similar question if all are used
+    """
+    # Clarification: use dedicated clarification question (one per dimension)
     if question_type == "clarify" and session.contradictions:
         dim = session.contradictions[0]
         clarify_q = CLARIFY_QUESTIONS.get(dim)
-        if clarify_q:
+        if clarify_q and clarify_q not in asked_questions:
             return clarify_q
+        # Fall through to regular question if clarify already used
 
-    # Follow-up for short answers
-    if question_type == "follow_up" and session.answers:
-        # Use follow-up template
-        idx = len(session.dimension_answers.get(target_dimension, []))
-        follow_up = FOLLOW_UP_QUESTIONS[idx % len(FOLLOW_UP_QUESTIONS)]
-        return follow_up
+    # Follow-up for short answers or revisiting
+    if question_type == "follow_up":
+        # Try a fresh follow-up question first
+        fu = pick_unused_followup(asked_questions)
+        if fu:
+            return fu
+        # If all follow-ups used, pick a new dimension question
+        pass
 
-    # Standard dimension question from bank
-    questions = FALLBACK_QUESTIONS.get(target_dimension, FALLBACK_QUESTIONS["日常生活"])
-    # Track which index we're at for this dimension
-    key = f"{session.session_id}:{target_dimension}"
-    idx = _dimension_question_index.get(key, 0)
-    question = questions[idx % len(questions)]
-    _dimension_question_index[key] = (idx + 1) % len(questions)
-
+    # Standard: pick an unused, non-similar question from the bank
+    question = pick_unused_question(target_dimension, asked_questions)
     return question
