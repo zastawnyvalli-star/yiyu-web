@@ -4734,3 +4734,111 @@ body:not(.elderly) #historyView .history-item[data-risk]::before {
 body:not(.elderly) #historyView .history-item[data-risk] > strong {
   color: var(--risk-color);
 }
+
+/* Compact assessment history table */
+body:not(.elderly) #historyView .history {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #fff;
+}
+
+.history-table th,
+.history-table td {
+  padding: 15px 18px;
+  border-bottom: 1px solid #e1e9eb;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.history-table th {
+  background: #f5f8f9;
+  color: #72858f;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.history-table th:nth-child(1) { width: 34%; }
+.history-table th:nth-child(2) { width: 22%; }
+.history-table th:nth-child(3) { width: 22%; }
+.history-table th:nth-child(4) { width: 22%; }
+
+.history-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.history-table tbody tr:hover {
+  background: #f8fbfb;
+}
+
+.history-table td {
+  color: #3f5966;
+  font-size: 14px;
+}
+
+.history-table-row[data-risk="normal"] {
+  --risk-color: #16856e;
+  --risk-soft: #eaf8f3;
+}
+
+.history-table-row[data-risk="attention"] {
+  --risk-color: #c78312;
+  --risk-soft: #fff7df;
+}
+
+.history-table-row[data-risk="suspected_mci"] {
+  --risk-color: #c94e46;
+  --risk-soft: #fff0ef;
+}
+
+.history-table-row td:nth-child(2) strong {
+  color: var(--risk-color, #526b77);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.history-risk-label {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border: 1px solid color-mix(in srgb, var(--risk-color, #84959e) 35%, white);
+  border-radius: 5px;
+  background: var(--risk-soft, #f1f4f5);
+  color: var(--risk-color, #657985);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.history-report-action {
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #237f91;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.history-report-action:hover {
+  color: #155f70;
+  text-decoration: underline;
+}
+
+.history-empty {
+  min-height: 170px;
+  border: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 820px) {
+  .history-table th,
+  .history-table td {
+    padding: 12px;
+  }
+}
