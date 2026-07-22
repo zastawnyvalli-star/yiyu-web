@@ -5264,3 +5264,46 @@ body.elderly #historyView .history-risk-label {
     width: calc(100% - 72px);
   }
 }
+
+/* Keep enlarged elderly report scores fully inside the ring. */
+body.elderly #reportView .score {
+  width: 220px;
+  height: 220px;
+  min-width: 220px;
+  flex: 0 0 220px;
+  box-sizing: border-box;
+  border-width: 12px;
+}
+
+body.elderly #reportView .score strong {
+  max-width: 100%;
+  display: block;
+  color: #117f80;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  -webkit-text-fill-color: currentColor;
+  background: none;
+}
+
+body.elderly #reportView .score span {
+  margin-top: 10px;
+  font-size: 19px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+@media (max-width: 820px) {
+  body.elderly #reportView .score {
+    width: 190px;
+    height: 190px;
+    min-width: 190px;
+    flex-basis: 190px;
+  }
+
+  body.elderly #reportView .score strong {
+    font-size: 38px;
+  }
+}
