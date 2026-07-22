@@ -2054,6 +2054,15 @@ body[data-active="auth"] #authView .grid2 {
   text-align: center;
 }
 
+.recording-stage p span {
+  display: block;
+  margin-top: 10px;
+  color: #718491;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
 .recording-stage .ghost {
   min-height: 48px;
   padding: 0 22px;
