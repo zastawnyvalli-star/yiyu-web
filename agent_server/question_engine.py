@@ -50,6 +50,7 @@ def generate_next_question(
     if llm_available:
         try:
             q = _generate_llm_question(session, target_dimension, question_type, asked)
+            q = _ensure_respectful_followup(q, session, asked)
             session.asked_questions.append(q)
             return q
         except Exception:
@@ -57,8 +58,34 @@ def generate_next_question(
 
     # Fallback: use expanded template bank with dedup
     q = _generate_fallback_question(session, target_dimension, question_type, asked)
+    q = _ensure_respectful_followup(q, session, asked)
     session.asked_questions.append(q)
     return q
+
+
+def _ensure_respectful_followup(question: str, session: SessionState, asked_questions: List[str]) -> str:
+    """Keep short-answer follow-ups neutral and relevant to the previous question."""
+    if not session.answers:
+        return question
+
+    answer = session.answers[-1].get("text", "").strip()
+    previous = asked_questions[-1] if asked_questions else ""
+    short_affirmative = answer in {"有", "有过", "是", "对", "会", "偶尔", "有一点", "有时候"}
+    inappropriate = "挺有意思" in question or "有意思的，后来" in question
+    if not short_affirmative and not inappropriate:
+        return question
+
+    if any(word in previous for word in ("找不到", "放哪", "忘", "想不起来", "记不清")):
+        return "我明白了。最近一次是什么时候？后来是自己想起来了，还是家里人提醒您的？"
+    if any(word in previous for word in ("睡", "醒", "失眠", "做梦")):
+        return "我明白了。这种情况最近一周大概会有几次？"
+    if any(word in previous for word in ("心情", "担心", "操心", "孤单", "着急")):
+        return "我明白了。这样的感受最近常出现吗？"
+    if any(word in previous for word in ("说不出来", "想不起词", "聊天", "表达")):
+        return "我明白了。最近一次出现这种情况时，后来是自己想起来的吗？"
+    if any(word in previous for word in ("做饭", "家务", "算账", "手机", "安排", "关火")):
+        return "我明白了。遇到这种情况时，通常需要家里人帮忙吗？"
+    return "我明白了。您愿意说说最近一次是什么情况吗？"
 
 
 def _determine_question_type(session: SessionState) -> str:

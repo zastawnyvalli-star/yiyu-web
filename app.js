@@ -84,3 +84,11 @@ const runBeginScreening=beginScreening;
 beginScreening=async function(){state.screening=fresh().screening;state.report=null;save();return runBeginScreening()};
 
 if(state.screening?.done&&state.screening.answers.length<(state.screening.totalMinRounds||10)){state.screening.done=false;state.screening.completionNote="";state.screening.messages=state.screening.messages.filter(m=>!(m[0]==="ai"&&/整理成一份简单报告|报告已经整理好了|我来把这些内容整理成报告/.test(m[1])));state.screening.messages.push(["ai",getFallbackQuestion(state.screening)]);state.report=null;save();render()}
+
+function respectfulFollowup(question,previous,answer){const reply=(answer||"").replace(/[，。！？、,.!?\s]/g,"");const affirmative=/^(有|有过|是|对|会|偶尔|有一点|有时候)$/.test(reply);const inappropriate=/挺有意思|有意思的.*后来/.test(question||"");if(!affirmative&&!inappropriate)return question;if(/找不到|放哪|忘|想不起来|记不清/.test(previous||""))return"我明白了。最近一次是什么时候？后来是自己想起来了，还是家里人提醒您的？";if(/睡|醒|失眠|做梦/.test(previous||""))return"我明白了。这种情况最近一周大概会有几次？";if(/心情|担心|操心|孤单|着急/.test(previous||""))return"我明白了。这样的感受最近常出现吗？";if(/说不出来|想不起词|聊天|表达/.test(previous||""))return"我明白了。最近一次出现这种情况时，后来是自己想起来的吗？";if(/做饭|家务|算账|手机|安排|关火/.test(previous||""))return"我明白了。遇到这种情况时，通常需要家里人帮忙吗？";return"我明白了。您愿意说说最近一次是什么情况吗？"}
+
+const requestAgentResponse=agentPost;
+agentPost=async function(path,body={}){const data=await requestAgentResponse(path,body);if(path==="/answer"&&data?.nextQuestion){const last=state.screening.answers[state.screening.answers.length-1];data.nextQuestion=respectfulFollowup(data.nextQuestion,last?.question||"",last?.text||body.text||"")}return data};
+
+const requestFallbackQuestion=getFallbackQuestion;
+getFallbackQuestion=function(screening){const question=requestFallbackQuestion(screening);const last=screening.answers[screening.answers.length-1];return respectfulFollowup(question,last?.question||"",last?.text||"")};
