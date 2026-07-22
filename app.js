@@ -170,10 +170,30 @@ const qualityQuestionBank=[
 
 function pickFreshQualityQuestion(screening,excludedTopic=""){const used=(screening.messages||[]).filter(message=>message[0]==="ai").map(message=>message[1]);const offset=(screening.answers||[]).length%qualityQuestionBank.length;for(let index=0;index<qualityQuestionBank.length;index++){const question=qualityQuestionBank[(offset+index)%qualityQuestionBank.length];if(questionTopic(question)!==excludedTopic&&!used.some(previous=>questionSimilarity(question,previous)>=.52))return question}return qualityQuestionBank.find(question=>questionTopic(question)!==excludedTopic)||qualityQuestionBank[offset]}
 function simpleRephrase(question,screening){if(/感觉|近况|生活状态|身体/.test(question))return"没关系，简单回答就行。您昨晚睡得好吗？";if(/忘|记不清|找不到|放哪/.test(question))return"您可以回答有或没有：钥匙放在哪里，通常记得吗？";if(/睡|醒|失眠/.test(question))return"您昨晚睡得好吗？回答好或不好都可以。";if(/心情|担心|开心/.test(question))return"您最近心情还好吗？回答还好或不太好都可以。";return`没关系，我们换个简单问题。${pickFreshQualityQuestion(screening)}`}
-function friendlyLead(answer=""){if(/难受|不好|睡不着|忘|找不到|不会|不记得/.test(answer))return"好，我记下了。";if(/不错|挺好|还好|舒服|可以|正常/.test(answer))return"听起来还不错。";if(/^(没有|没|不会|不是)/.test(compactConversationText(answer)))return"好，我知道了。";return"明白了。"}
+function friendlyLead(answer="",screening={}){
+  const value=String(answer||"").trim(),previous=screening.answers?.at(-1)?.question||"";
+  const groups=[];
+  if(/孙子|孙女|孩子|小孩/.test(value+previous))groups.push(/不记得|记不清|忘/.test(value)?["记不清具体多大也没关系，孩子长得快嘛。","没关系，孩子的年纪有时一下子真不好想。"]:["有孩子陪着，家里会热闹不少。","能和孩子待在一起，心里也会舒坦些。"]);
+  if(/电视|节目|新闻|戏曲/.test(value+previous))groups.push(["平时看看电视，也是一种放松。","有喜欢看的节目，日子也更有意思。"]);
+  if(/睡|醒|梦|失眠/.test(value+previous))groups.push(/不好|睡不着|总醒|常醒/.test(value)?["晚上休息不好，白天确实容易没精神。","夜里睡不安稳，人也容易觉得累。"]:["夜里能睡得安稳，白天也会舒服些。","休息得还可以，精神一般也更轻松。"]);
+  if(/吃|饭|菜|胃口/.test(value+previous))groups.push(/不好|没胃口|吃不下/.test(value)?["胃口不太好，吃饭确实会有些费劲。","吃不太下的时候，人也容易没力气。"]:["饭吃得顺口，身体也更有劲。","三餐还顺当，日常生活也会舒服些。"]);
+  if(/家人|老伴|女儿|儿子|朋友|邻居/.test(value+previous))groups.push(["身边有人说说话，心里会踏实些。","平时有人陪伴，日子也不会太闷。"]);
+  if(/散步|走路|公园|锻炼|出门/.test(value+previous))groups.push(["能出去走一走，身心都会松快些。","平时活动活动，日子也更有精神。"]);
+  if(/难受|不好|担心|害怕|着急|烦/.test(value))groups.push(["这确实会让人有点不舒服，咱们慢慢聊。","遇到这种情况难免会操心，先不用着急。"]);
+  if(/忘|找不到|不会|不记得|记不清/.test(value))groups.push(["偶尔一下子想不起来也别着急，咱们慢慢说。","没关系，一时记不清的事咱们先放一放。"]);
+  if(/不错|挺好|还好|舒服|可以|正常/.test(value))groups.push(["这样听着，您这方面还挺顺当。","那还不错，日常过得顺心最重要。"]);
+  if(/^(没有|没|不会|不是)/.test(compactConversationText(value)))groups.push(["那就好，咱们再聊点别的日常小事。","好，这方面目前没有让您为难。"]);
+  groups.push(["您说的我听明白了。","好，咱们就顺着日常慢慢聊。","嗯，我听着呢。"]);
+  const recent=(screening.messages||[]).filter(message=>message[0]==="ai").slice(-6).map(message=>message[1]);
+  for(const group of groups)for(const lead of group)if(!recent.some(message=>message.includes(lead)))return lead;
+  const fallback=groups.flat();return fallback[(screening.answers?.length||0)%fallback.length];
+}
 function contextualEverydayQuestion(screening){const last=screening.answers?.[screening.answers.length-1]||{},topic=questionTopic(last.question||""),sameTopic=(screening.answers||[]).filter(answer=>questionTopic(answer.question||"")===topic).length;if(sameTopic<=1){if(topic==="sleep")return/夜里会醒/.test(last.question||"")?"白天精神怎么样？":"夜里会醒吗？";if(topic==="memory")return"这种情况一个星期会有一两次吗？";if(topic==="meal")return"最近胃口还好吗？";if(topic==="mood")return"这几天有和家人聊聊天吗？";if(topic==="language")return"看电视时，内容能听明白吗？";if(topic==="daily")return"出门前，会记得带钥匙和手机吗？";if(topic==="orientation")return"熟悉的路还记得怎么走吗？";if(topic==="general")return"您昨晚睡得好吗？"}return pickFreshQualityQuestion(screening,topic)}
 function improveGeneratedQuestion(candidate,screening){
-  const question=String(candidate||"").trim().replace(/^(好的?|我明白了|明白了|听起来[^。！？]*|谢谢您)[，。！\s]*/,"");
+  const raw=String(candidate||"").trim();
+  const sentences=raw.match(/[^。！？?]+[。！？?]?/g)||[];
+  const modelQuestions=sentences.filter(sentence=>/[？?]$/.test(sentence.trim()));
+  const question=(modelQuestions.at(-1)||raw).trim().replace(/^(好的?|我明白了|明白了|听起来[^。！？]*|谢谢您)[，。！\s]*/,"");
   const used=(screening.messages||[]).filter(message=>message[0]==="ai").map(message=>message[1]);
   const lastRecord=screening.answers?.[screening.answers.length-1]||{};
   const lastAnswer=lastRecord.text||"";
@@ -183,7 +203,7 @@ function improveGeneratedQuestion(candidate,screening){
   const repeated=used.some(previous=>questionSimilarity(question,previous)>=.52);
   const disconnected=previousTopic&&sameTopicCount<=1&&candidateTopic&&candidateTopic!==previousTopic;
   const nextQuestion=isHardQuestion(question)||repeated||disconnected?contextualEverydayQuestion(screening):question;
-  return lastAnswer?`${friendlyLead(lastAnswer)}${nextQuestion}`:nextQuestion;
+  return lastAnswer?`${friendlyLead(lastAnswer,screening)}${nextQuestion}`:nextQuestion;
 }
 
 const qualityFallbackQuestion=getFallbackQuestion;
