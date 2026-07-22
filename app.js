@@ -117,3 +117,17 @@ getFallbackQuestion=function(screening){return lifestyleQuestionFor(screening)||
 
 const requestAdaptiveAgent=agentPost;
 agentPost=async function(path,body={}){const data=await requestAdaptiveAgent(path,body);if(path==="/answer"&&data?.shouldContinue!==false){const lifestyleQuestion=lifestyleQuestionFor(state.screening);if(lifestyleQuestion)data.nextQuestion=lifestyleQuestion}return data};
+
+const riskLabels={normal:"无风险",attention:"有风险",suspected_mci:"高危"};
+function applyReportRiskTheme(){const content=$("#reportContent"),risk=state.report?.classification||"";if(!content)return;content.dataset.risk=risk;if(risk&&$("#riskText"))$("#riskText").textContent=riskLabels[risk]||$("#riskText").textContent}
+function applyHistoryRiskTheme(){$$(".history-item[data-report-index]").forEach(item=>{const report=state.reports[Number(item.dataset.reportIndex)];item.dataset.risk=report?.classification||""})}
+function applyTrendRiskTheme(){const reports=filtered(),latest=reports[reports.length-1],card=$("#trendLatestScore")?.closest("article");if(card)card.dataset.risk=latest?.classification||""}
+
+const renderReportByRisk=renderReport;
+renderReport=function(){renderReportByRisk();applyReportRiskTheme()};
+const renderHistoryByRisk=renderHistory;
+renderHistory=function(){renderHistoryByRisk();applyHistoryRiskTheme();applyTrendRiskTheme()};
+const renderTrendSummaryByRisk=renderTrendSummary;
+renderTrendSummary=function(){renderTrendSummaryByRisk();applyTrendRiskTheme()};
+if(state.report)renderReport();
+if(state.active==="history")renderHistory();

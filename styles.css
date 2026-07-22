@@ -4650,3 +4650,87 @@ body.elderly .dimension-dots {
   box-shadow: none;
   font-size: 14px;
 }
+
+/* Consistent three-level risk colors */
+#reportContent[data-risk="normal"] {
+  --risk-color: #16856e;
+  --risk-soft: #eaf8f3;
+  --risk-border: #a8dfd0;
+}
+
+#reportContent[data-risk="attention"] {
+  --risk-color: #c78312;
+  --risk-soft: #fff7df;
+  --risk-border: #f0d186;
+}
+
+#reportContent[data-risk="suspected_mci"] {
+  --risk-color: #c94e46;
+  --risk-soft: #fff0ef;
+  --risk-border: #efb5b1;
+}
+
+body:not(.elderly) #reportView #reportContent[data-risk] .report-head {
+  background: linear-gradient(110deg, #fff 0%, var(--risk-soft) 100%);
+}
+
+body:not(.elderly) #reportView #reportContent[data-risk] .report-head::before {
+  background: var(--risk-color);
+}
+
+body:not(.elderly) #reportView #reportContent[data-risk] .score {
+  border-color: var(--risk-border);
+  background: #fff;
+  box-shadow: inset 0 0 0 5px var(--risk-soft);
+}
+
+body:not(.elderly) #reportView #reportContent[data-risk] .score strong {
+  background: none;
+  color: var(--risk-color);
+  -webkit-text-fill-color: currentColor;
+}
+
+body:not(.elderly) #reportView #reportContent[data-risk] #riskText {
+  color: var(--risk-color) !important;
+}
+
+#historyView .trend-summary article[data-risk="normal"],
+#historyView .history-item[data-risk="normal"] {
+  --risk-color: #16856e;
+  --risk-soft: #eaf8f3;
+}
+
+#historyView .trend-summary article[data-risk="attention"],
+#historyView .history-item[data-risk="attention"] {
+  --risk-color: #c78312;
+  --risk-soft: #fff7df;
+}
+
+#historyView .trend-summary article[data-risk="suspected_mci"],
+#historyView .history-item[data-risk="suspected_mci"] {
+  --risk-color: #c94e46;
+  --risk-soft: #fff0ef;
+}
+
+body:not(.elderly) #historyView .trend-summary article[data-risk] {
+  border-left: 4px solid var(--risk-color);
+  background: linear-gradient(110deg, #fff, var(--risk-soft));
+}
+
+body:not(.elderly) #historyView .trend-summary article[data-risk] > strong {
+  color: var(--risk-color);
+}
+
+body:not(.elderly) #historyView .history-item[data-risk]::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border-radius: 50%;
+  background: var(--risk-color);
+  box-shadow: 0 0 0 4px var(--risk-soft);
+}
+
+body:not(.elderly) #historyView .history-item[data-risk] > strong {
+  color: var(--risk-color);
+}
