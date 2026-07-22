@@ -91,7 +91,7 @@ function lastAskedQuestion(text=""){const parts=String(text).match(/[^。！？?
 function respectfulFollowup(question,previous,answer){const reply=(answer||"").replace(/[，。！？、,.!?\s]/g,""),asked=lastAskedQuestion(previous);const affirmative=/^(有|有过|是|对|会|偶尔|有一点|有时候)$/.test(reply);const inappropriate=/挺有意思|有意思的.*后来/.test(question||"");if(!affirmative&&!inappropriate)return question;if(/散步|走一走|出去走|出门活动/.test(asked))return"这几天能出去走走挺好的。您一般一次会走多久？";if(/找不到|放哪|忘|想不起来|记不清/.test(asked))return"偶尔想不起来也别着急。最近是忘了放东西，还是忘了要做的事？";if(/睡|醒|失眠|做梦/.test(asked))return"您刚才说夜里会醒。最近一周大概有几晚会醒？";if(/心情|担心|操心|孤单|着急/.test(asked))return"听着这件事让您有些操心。最近是不是常有这样的感觉？";if(/说不出来|想不起词|聊天|表达/.test(asked))return"有时话到嘴边想不起来，确实会着急。后来一般能自己想起来吗？";if(/做饭|家务|算账|手机|安排|关火/.test(asked))return"做这些熟悉的事情费劲时，家里人会帮您吗？";return question}
 
 const requestAgentResponse=agentPost;
-agentPost=async function(path,body={}){const data=await requestAgentResponse(path,body);if(path==="/answer"&&data?.nextQuestion){const last=state.screening.answers[state.screening.answers.length-1];data.nextQuestion=respectfulFollowup(data.nextQuestion,last?.question||"",last?.text||body.text||"")}return data};
+agentPost=async function(path,body={}){return requestAgentResponse(path,body)};
 
 const requestFallbackQuestion=getFallbackQuestion;
 getFallbackQuestion=function(screening){const question=requestFallbackQuestion(screening);const last=screening.answers[screening.answers.length-1];return respectfulFollowup(question,last?.question||"",last?.text||"")};
@@ -149,7 +149,7 @@ agentPost=async function(path,body={}){const data=await requestAgentWithRoundNot
 function compactConversationText(text=""){return String(text).replace(/[，。！？、,.!?；;：:\s…]+/g,"")}
 function isUnusableReply(text=""){const value=compactConversationText(text);return !value||/^[?？!！.。…]+$/.test(String(text).trim())||/^(不知道|不清楚|没听懂|听不懂|什么意思|怎么说|不会说|不想说)$/.test(value)}
 function questionSimilarity(left="",right=""){const a=compactConversationText(left),b=compactConversationText(right);if(!a||!b)return 0;if(a===b)return 1;if(Math.min(a.length,b.length)>=8&&(a.includes(b)||b.includes(a)))return .92;const pairs=value=>{const result=new Set();for(let i=0;i<value.length-1;i++)result.add(value.slice(i,i+2));return result},pa=pairs(a),pb=pairs(b);let shared=0;pa.forEach(pair=>{if(pb.has(pair))shared++});return shared/Math.max(1,Math.min(pa.size,pb.size))}
-function isGenericQuestion(question=""){return /再多说|多讲|举个例子|比如说|详细|具体说|展开说|描述一下|最近一次是什么情况|后来怎么样|还有其他类似|为什么|什么原因|怎么看这件事/.test(question)}
+function isGenericQuestion(question=""){return /再多说|多讲|举个例子|比如说|详细|具体说|展开说|描述一下|最近一次是什么情况|后来怎么样|还有其他类似|为什么|什么原因|怎么看这件事|这种情况|这样的情况|这件事|这方面/.test(question)}
 function questionTopic(question=""){const asked=lastAskedQuestion(question);if(/散步|走一走|出去走|出门活动|锻炼/.test(asked))return"activity";if(/睡|醒|梦|精神|困/.test(asked))return"sleep";if(/忘|记得|想不起来|钥匙|眼镜|昨天吃/.test(asked))return"memory";if(/吃饭|三餐|胃口/.test(asked))return"meal";if(/心情|开心|担心|难过|着急/.test(asked))return"mood";if(/聊天|说话|听懂|词/.test(asked))return"language";if(/买东西|算账|做饭|门窗|钥匙和手机/.test(asked))return"daily";if(/星期|月份|今天|路线|路还/.test(asked))return"orientation";if(/家人|邻居|朋友/.test(asked))return"social";if(/感觉|近况|生活状态|身体/.test(asked))return"general";return""}
 function isHardQuestion(question=""){const text=String(question||"").trim(),questionMarks=(text.match(/[？?]/g)||[]).length;return !text||text.length>38||questionMarks>1||isGenericQuestion(text)||/认知|定向|执行功能|语义|词汇|障碍|症状|异常|风险|诊断|评估|筛查|频率|回忆能力|影响生活|处理能力/.test(text)}
 
@@ -202,11 +202,12 @@ function improveGeneratedQuestion(candidate,screening){
   const lastAnswer=lastRecord.text||"";
   const previousQuestion=questionTopic(lastRecord.question||"")?lastRecord.question:([...(screening.answers||[])].reverse().find(answer=>questionTopic(answer.question||""))?.question||lastRecord.question||"");
   const clearQuestion=explicitQuestion(question,previousQuestion);
-  const previousTopic=questionTopic(previousQuestion),candidateTopic=questionTopic(clearQuestion);
-  const sameTopicCount=(screening.answers||[]).filter(answer=>questionTopic(answer.question||"")===previousTopic).length;
-  const repeated=used.some(previous=>questionSimilarity(clearQuestion,previous)>=.52);
-  const disconnected=previousTopic&&sameTopicCount<=1&&candidateTopic&&candidateTopic!==previousTopic;
-  const nextQuestion=isHardQuestion(clearQuestion)||repeated||disconnected?contextualEverydayQuestion(screening):clearQuestion;
+  const repeated=used.some(previous=>questionSimilarity(clearQuestion,lastAskedQuestion(previous))>=.52);
+  const lead=raw.slice(0,Math.max(0,raw.lastIndexOf(question))).replace(/[，。！\s]+$/g,"");
+  const repeatedLead=lead&&used.slice(-4).some(previous=>compactConversationText(previous.split(/[。！？]/)[0])===compactConversationText(lead));
+  const invalid=isHardQuestion(clearQuestion)||repeated||repeatedLead;
+  if(!invalid){return clearQuestion===question?raw:raw.replace(question,clearQuestion)}
+  const nextQuestion=contextualEverydayQuestion(screening);
   return lastAnswer?`${friendlyLead(lastAnswer,screening)}${nextQuestion}`:nextQuestion;
 }
 
