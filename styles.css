@@ -5574,3 +5574,26 @@ body[data-active="auth"] #authView .login-panel .login-row button[data-login="ph
 body:not([data-active="screening"]) #playSummaryBtn {
   display: none !important;
 }
+
+/* Keep the chat playback control visible against pale message bubbles. */
+#screeningView .speak {
+  border: 1px solid #075f58;
+  background: #0f766e;
+  color: #fff;
+  opacity: 1;
+  box-shadow: 0 3px 9px rgba(15, 118, 110, .28);
+}
+
+#screeningView .bubble:hover .speak,
+#screeningView .speak:hover {
+  border-color: #064e3b;
+  background: #0b5f59;
+  opacity: 1;
+}
+
+#screeningView .speak.playing {
+  border-color: #b91c1c;
+  background: #dc2626;
+  color: #fff;
+  opacity: 1;
+}
