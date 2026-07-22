@@ -4842,3 +4842,102 @@ body:not(.elderly) #historyView .history {
     padding: 12px;
   }
 }
+
+/* Keep the current question visible while the user is recording. */
+body.recording-now #screeningView .chat {
+  grid-template-rows: minmax(180px, 1fr) auto;
+}
+
+body.recording-now #screeningView .messages {
+  display: flex !important;
+  min-height: 0;
+}
+
+body.recording-now #screeningView .composer,
+body.recording-now #screeningView #recordingHint {
+  display: none !important;
+}
+
+body.recording-now #screeningView .recording-stage {
+  min-height: 218px;
+  padding: 24px;
+  gap: 10px;
+  border-top: 1px solid #d5e3e6;
+  background: #fff;
+}
+
+body.recording-now #screeningView .record-stage-mic {
+  width: 104px;
+  height: 104px;
+  font-size: 42px;
+}
+
+body.recording-now #screeningView .recording-stage p {
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+body.recording-now #screeningView .recording-stage p span {
+  margin-top: 5px;
+  font-size: 15px;
+}
+
+.pause-symbol {
+  font-size: 0;
+}
+
+.pause-symbol::before,
+.pause-symbol::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 18px;
+  border-radius: 2px;
+  background: #f3ad2f;
+  transform: translateY(-50%);
+}
+
+.pause-symbol::before {
+  left: 17px;
+}
+
+.pause-symbol::after {
+  right: 17px;
+}
+
+@media (max-width: 820px) {
+  body.recording-now #screeningView .chat {
+    grid-template-rows: minmax(190px, 1fr) auto;
+  }
+
+  body.recording-now #screeningView .recording-stage {
+    min-height: 196px;
+    padding: 20px 16px;
+  }
+
+  body.recording-now #screeningView .record-stage-mic {
+    width: 88px;
+    height: 88px;
+    font-size: 36px;
+  }
+
+  body.recording-now #screeningView .pause-symbol {
+    right: -10px;
+    bottom: 5px;
+    width: 46px;
+    height: 46px;
+  }
+
+  body.recording-now #screeningView .pause-symbol::before {
+    left: 14px;
+  }
+
+  body.recording-now #screeningView .pause-symbol::after {
+    right: 14px;
+  }
+
+  body.recording-now #screeningView .recording-stage p {
+    font-size: 23px;
+  }
+}
