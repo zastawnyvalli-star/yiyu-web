@@ -5570,3 +5570,7 @@ body[data-active="auth"] #authView .login-panel .login-row button[data-login="ph
   border-color: #88adb5;
   background: #eef5f6;
 }
+
+body:not([data-active="screening"]) #playSummaryBtn {
+  display: none !important;
+}
