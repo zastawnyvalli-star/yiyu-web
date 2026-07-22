@@ -5729,3 +5729,7 @@ body.elderly #reportView .ability-track {
   height: 12px;
   border-radius: 6px;
 }
+
+#screeningView .side .progress {
+  display: none !important;
+}
