@@ -3530,3 +3530,285 @@ body.elderly .dimension-dots {
     white-space: normal;
   }
 }
+
+/* Professional desktop screening workspace */
+@media (min-width: 1040px) {
+  body:not(.elderly):not([data-active="auth"]) .topbar {
+    min-height: 88px;
+    padding: 12px 28px;
+    background: linear-gradient(112deg, #4f9fbd 0%, #62b8c0 48%, #73c8b1 100%);
+  }
+
+  body:not(.elderly):not([data-active="auth"]) .brand img {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+  }
+
+  body:not(.elderly):not([data-active="auth"]) .brand h1 {
+    font-size: 42px;
+  }
+
+  body:not(.elderly):not([data-active="auth"]) .topbar .ghost {
+    min-height: 42px;
+    padding: 0 20px;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 8px;
+    background: rgba(255,255,255,.14);
+    font-size: 17px;
+  }
+
+  body:not(.elderly):not([data-active="auth"]) .disclaimer-bar {
+    min-height: 48px;
+    background: #fffbf1;
+  }
+
+  body:not(.elderly):not([data-active="auth"]) .disclaimer-bar span {
+    width: 28px;
+    height: 28px;
+    flex-basis: 28px;
+    margin-left: 22px;
+    font-size: 17px;
+  }
+
+  body:not(.elderly):not([data-active="auth"]) .disclaimer-bar p {
+    padding: 9px 22px 9px 6px;
+    font-size: 15px;
+  }
+
+  body:not(.elderly) #screeningView {
+    height: calc(100vh - 136px);
+    min-height: 0;
+    overflow: hidden;
+    background: #edf4f5;
+  }
+
+  body:not(.elderly) #screeningView .screen {
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 296px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    background: #f4f8f9;
+  }
+
+  body:not(.elderly) #screeningView .side {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: stretch;
+    gap: 18px;
+    padding: 28px 24px 24px;
+    overflow: hidden;
+    border: 0;
+    border-right: 1px solid #d7e4e7;
+    background: #f8fbfb;
+  }
+
+  body:not(.elderly) #screeningView .side::before {
+    display: none;
+  }
+
+  body:not(.elderly) #screeningView .side h2 {
+    display: flex;
+    gap: 10px;
+    color: #183b49;
+    font-size: 26px;
+    line-height: 1.25;
+    -webkit-text-fill-color: currentColor;
+    background: none;
+  }
+
+  body:not(.elderly) #screeningView .side h2::before {
+    width: 10px;
+    height: 28px;
+    border-radius: 3px;
+    background: #4eb4ad;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #screeningView .side > p:not(.support-note) {
+    color: #607482;
+    font-size: 14px;
+    line-height: 1.75;
+    text-align: left;
+  }
+
+  body:not(.elderly) #screeningView .side .progress {
+    order: 3;
+    width: 100%;
+    padding: 16px;
+    gap: 12px;
+    border: 1px solid #d5e5e8;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #screeningView .side .progress > div:first-child {
+    display: block;
+    white-space: normal;
+  }
+
+  body:not(.elderly) #screeningView .side .progress > div:first-child span {
+    display: block;
+    margin-bottom: 4px;
+    color: #718491;
+    font-size: 12px;
+  }
+
+  body:not(.elderly) #screeningView .side #progressText {
+    display: block;
+    color: #174e61;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+    -webkit-text-fill-color: currentColor;
+    background: none;
+  }
+
+  body:not(.elderly) #screeningView .dimension-dots {
+    order: 4;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  body:not(.elderly) #screeningView .dim-dot {
+    min-height: 30px;
+    padding: 4px 8px;
+    border: 1px solid #e0e9eb;
+    border-radius: 6px;
+    background: #f1f5f6;
+    color: #81929e;
+    font-size: 12px;
+  }
+
+  body:not(.elderly) #screeningView .side #recordSupport {
+    display: none;
+  }
+
+  body:not(.elderly) #screeningView .side #restartBtn {
+    order: 6;
+    width: 100%;
+    min-height: 44px;
+    margin-top: auto;
+    border: 1px solid #d5e2e5;
+    border-radius: 7px;
+    color: #4f6573;
+    background: #fff;
+    box-shadow: none;
+    font-size: 15px;
+  }
+
+  body:not(.elderly) #screeningView .chat {
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    overflow: hidden;
+    border: 0;
+    background: #edf5f6;
+  }
+
+  body:not(.elderly) #screeningView .messages {
+    min-height: 0;
+    padding: 30px 40px 22px;
+    gap: 20px;
+    background:
+      linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,.55)),
+      linear-gradient(145deg, #e9f3f5, #eef7f4);
+  }
+
+  body:not(.elderly) #screeningView .message {
+    max-width: min(78%, 780px);
+    gap: 12px;
+  }
+
+  body:not(.elderly) #screeningView .msg-avatar {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    border-width: 1px;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(49, 86, 101, .08);
+  }
+
+  body:not(.elderly) #screeningView .bubble {
+    min-height: 0;
+    padding: 15px 52px 15px 18px;
+    border-radius: 8px;
+    font-size: 17px;
+    line-height: 1.7;
+    box-shadow: 0 8px 24px rgba(45, 87, 103, .08);
+  }
+
+  body:not(.elderly) #screeningView .user .bubble {
+    padding-right: 18px;
+    border: 0;
+    background: #278da0;
+    color: #fff;
+  }
+
+  body:not(.elderly) #screeningView .speak {
+    right: 10px;
+    bottom: 10px;
+    width: 34px;
+    height: 34px;
+  }
+
+  body:not(.elderly) #screeningView .composer {
+    grid-template-columns: 56px minmax(0, 1fr) auto auto 90px;
+    gap: 12px;
+    padding: 16px 24px 14px;
+    border-top: 1px solid #d4e2e5;
+    background: #fff;
+    box-shadow: 0 -10px 28px rgba(49, 83, 96, .06);
+  }
+
+  body:not(.elderly) #screeningView #recordBtn {
+    width: 54px;
+    height: 54px;
+    border: 1px solid #d4e5e8;
+    background: #f5fafb;
+    box-shadow: none;
+    font-size: 23px;
+  }
+
+  body:not(.elderly) #screeningView .composer textarea {
+    min-height: 54px;
+    max-height: 84px;
+    padding: 14px 16px;
+    border: 1px solid #cadde2;
+    border-radius: 8px;
+    background: #fbfdfd;
+    font-size: 17px;
+  }
+
+  body:not(.elderly) #screeningView .composer .primary,
+  body:not(.elderly) #screeningView .composer .ghost {
+    height: 54px;
+    min-width: 82px;
+    border-radius: 7px;
+    font-size: 16px;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #screeningView .composer .primary {
+    min-width: 90px;
+    background: #237f91;
+    font-size: 17px;
+  }
+
+  body:not(.elderly) #screeningView .composer-hint {
+    color: #778b97;
+    font-size: 12px;
+  }
+
+  body.recording-now:not(.elderly) #screeningView .recording-stage {
+    background: #f7fbfb;
+  }
+}
