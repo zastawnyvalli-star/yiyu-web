@@ -147,42 +147,43 @@ agentPost=async function(path,body={}){const data=await requestAgentWithRoundNot
 function compactConversationText(text=""){return String(text).replace(/[，。！？、,.!?；;：:\s…]+/g,"")}
 function isUnusableReply(text=""){const value=compactConversationText(text);return !value||/^[?？!！.。…]+$/.test(String(text).trim())||/^(不知道|不清楚|没听懂|听不懂|什么意思|怎么说|不会说|不想说)$/.test(value)}
 function questionSimilarity(left="",right=""){const a=compactConversationText(left),b=compactConversationText(right);if(!a||!b)return 0;if(a===b)return 1;if(Math.min(a.length,b.length)>=8&&(a.includes(b)||b.includes(a)))return .92;const pairs=value=>{const result=new Set();for(let i=0;i<value.length-1;i++)result.add(value.slice(i,i+2));return result},pa=pairs(a),pb=pairs(b);let shared=0;pa.forEach(pair=>{if(pb.has(pair))shared++});return shared/Math.max(1,Math.min(pa.size,pb.size))}
-function isGenericQuestion(question=""){return /再多说一点|举个例子|详细说说|具体是什么样|最近一次是什么情况|后来怎么样|还有其他类似/.test(question)}
+function isGenericQuestion(question=""){return /再多说|多讲|举个例子|比如说|详细|具体说|展开说|描述一下|最近一次是什么情况|后来怎么样|还有其他类似|为什么|什么原因|怎么看这件事/.test(question)}
+function questionTopic(question=""){if(/睡|醒|梦|精神|困/.test(question))return"sleep";if(/忘|记得|想不起来|钥匙|眼镜|昨天吃/.test(question))return"memory";if(/吃饭|三餐|胃口/.test(question))return"meal";if(/心情|开心|担心|难过|着急/.test(question))return"mood";if(/聊天|说话|听懂|词/.test(question))return"language";if(/买东西|算账|做饭|门窗|钥匙和手机/.test(question))return"daily";if(/星期|月份|今天|路线|路还/.test(question))return"orientation";if(/家人|邻居|朋友/.test(question))return"social";if(/感觉|近况|生活状态|身体/.test(question))return"general";return""}
+function isHardQuestion(question=""){const text=String(question||"").trim(),questionMarks=(text.match(/[？?]/g)||[]).length;return !text||text.length>38||questionMarks>1||isGenericQuestion(text)||/认知|定向|执行功能|语义|词汇|障碍|症状|异常|风险|诊断|评估|筛查|频率|回忆能力|影响生活|处理能力/.test(text)}
 
 const qualityQuestionBank=[
-  "最近睡眠怎么样？晚上容易醒吗？",
-  "平时常用的东西，比如钥匙或眼镜，会不会偶尔找不到？",
-  "您知道今天大概是星期几、几月份吗？",
-  "最近跟家人聊天时，说话还顺畅吗？有没有想说一个词，却一时想不起来的时候？",
-  "出门买东西时，算账和找钱还顺手吗？",
-  "最近心情怎么样？开心放松的时候多吗？",
-  "您平时一天三餐规律吗？胃口怎么样？",
-  "如果明天要办两三件事，您会怎么安排先后顺序？",
-  "昨天吃了什么，您现在还能大概想起来吗？",
-  "最近出门散步或买菜时，熟悉的路线还记得清楚吗？",
-  "看电视或听别人讲一件事时，内容一般能跟得上吗？",
-  "做完饭或出门前，您会记得检查火、电和门窗吗？",
-  "最近有没有一件让您觉得开心的小事？",
-  "白天精神怎么样？会不会经常觉得困？"
+  "您昨晚睡得好吗？",
+  "夜里会醒吗？",
+  "白天精神怎么样？",
+  "您平时三餐吃得规律吗？",
+  "最近胃口还好吗？",
+  "钥匙或眼镜放在哪里，通常记得吗？",
+  "昨天吃了什么，还能想起来吗？",
+  "今天是星期几，您大概知道吗？",
+  "和家人聊天时，说话还顺畅吗？",
+  "出门买东西时，算账还顺手吗？",
+  "出门前，会记得带钥匙和手机吗？",
+  "最近心情还好吗？",
+  "这几天有和家人聊聊天吗？",
+  "熟悉的路还记得怎么走吗？"
 ];
 
-function pickFreshQualityQuestion(screening){const used=(screening.messages||[]).filter(message=>message[0]==="ai").map(message=>message[1]);const offset=(screening.answers||[]).length%qualityQuestionBank.length;for(let index=0;index<qualityQuestionBank.length;index++){const question=qualityQuestionBank[(offset+index)%qualityQuestionBank.length];if(!used.some(previous=>questionSimilarity(question,previous)>=.52))return question}return qualityQuestionBank[offset]}
-function simpleRephrase(question,screening){if(/感觉|近况|生活状态|怎么样/.test(question))return"没关系，简单说说就行。您最近吃饭和睡觉都还好吗？";if(/忘|记不清|找不到|放哪/.test(question))return"您可以只回答有或没有：最近会不会找不到刚放下的东西？";if(/睡|醒|失眠/.test(question))return"您昨晚睡得好吗？回答好或不好都可以。";if(/心情|担心|开心/.test(question))return"您最近心情还好吗？回答还好、一般或不太好都可以。";return`没关系，咱们换个简单的问题。${pickFreshQualityQuestion(screening)}`}
+function pickFreshQualityQuestion(screening,excludedTopic=""){const used=(screening.messages||[]).filter(message=>message[0]==="ai").map(message=>message[1]);const offset=(screening.answers||[]).length%qualityQuestionBank.length;for(let index=0;index<qualityQuestionBank.length;index++){const question=qualityQuestionBank[(offset+index)%qualityQuestionBank.length];if(questionTopic(question)!==excludedTopic&&!used.some(previous=>questionSimilarity(question,previous)>=.52))return question}return qualityQuestionBank.find(question=>questionTopic(question)!==excludedTopic)||qualityQuestionBank[offset]}
+function simpleRephrase(question,screening){if(/感觉|近况|生活状态|身体/.test(question))return"没关系，简单回答就行。您昨晚睡得好吗？";if(/忘|记不清|找不到|放哪/.test(question))return"您可以回答有或没有：钥匙放在哪里，通常记得吗？";if(/睡|醒|失眠/.test(question))return"您昨晚睡得好吗？回答好或不好都可以。";if(/心情|担心|开心/.test(question))return"您最近心情还好吗？回答还好或不太好都可以。";return`没关系，我们换个简单问题。${pickFreshQualityQuestion(screening)}`}
+function friendlyLead(answer=""){if(/难受|不好|睡不着|忘|找不到|不会|不记得/.test(answer))return"好，我记下了。";if(/不错|挺好|还好|舒服|可以|正常/.test(answer))return"听起来还不错。";if(/^(没有|没|不会|不是)/.test(compactConversationText(answer)))return"好，我知道了。";return"明白了。"}
+function contextualEverydayQuestion(screening){const last=screening.answers?.[screening.answers.length-1]||{},topic=questionTopic(last.question||""),sameTopic=(screening.answers||[]).filter(answer=>questionTopic(answer.question||"")===topic).length;if(sameTopic<=1){if(topic==="sleep")return/夜里会醒/.test(last.question||"")?"白天精神怎么样？":"夜里会醒吗？";if(topic==="memory")return"这种情况一个星期会有一两次吗？";if(topic==="meal")return"最近胃口还好吗？";if(topic==="mood")return"这几天有和家人聊聊天吗？";if(topic==="language")return"看电视时，内容能听明白吗？";if(topic==="daily")return"出门前，会记得带钥匙和手机吗？";if(topic==="orientation")return"熟悉的路还记得怎么走吗？";if(topic==="general")return"您昨晚睡得好吗？"}return pickFreshQualityQuestion(screening,topic)}
 function improveGeneratedQuestion(candidate,screening){
-  const question=(candidate||"").trim();
+  const question=String(candidate||"").trim().replace(/^(好的?|我明白了|明白了|听起来[^。！？]*|谢谢您)[，。！\s]*/,"");
   const used=(screening.messages||[]).filter(message=>message[0]==="ai").map(message=>message[1]);
   const lastRecord=screening.answers?.[screening.answers.length-1]||{};
   const lastAnswer=lastRecord.text||"";
-  const previousQuestion=lastRecord.question||"";
-  const recent=used.slice(-3);
-  if(isGenericQuestion(question)){
-    if(/身体.*(不错|还好|舒服)|没啥难受|没有难受/.test(lastAnswer))return"听起来身体还舒服。最近睡眠怎么样，晚上容易醒吗？";
-    if(/还不错|挺好|还好|挺不错|一般/.test(lastAnswer)&&/睡|醒|失眠|做梦/.test(previousQuestion))return"听起来睡得还可以。最近一周晚上大概会醒几次？";
-    if(/还不错|挺好|还好|挺不错/.test(lastAnswer)&&/感觉|近况|生活状态|怎么样/.test(previousQuestion))return"那挺好。平时常用的东西，比如钥匙或眼镜，会不会偶尔找不到？";
-  }
-  if(!question||used.some(previous=>questionSimilarity(question,previous)>=.52))return pickFreshQualityQuestion(screening);
-  if(isGenericQuestion(question)&&recent.some(previous=>isGenericQuestion(previous)))return pickFreshQualityQuestion(screening);
-  return question;
+  const previousQuestion=questionTopic(lastRecord.question||"")?lastRecord.question:([...(screening.answers||[])].reverse().find(answer=>questionTopic(answer.question||""))?.question||lastRecord.question||"");
+  const previousTopic=questionTopic(previousQuestion),candidateTopic=questionTopic(question);
+  const sameTopicCount=(screening.answers||[]).filter(answer=>questionTopic(answer.question||"")===previousTopic).length;
+  const repeated=used.some(previous=>questionSimilarity(question,previous)>=.52);
+  const disconnected=previousTopic&&sameTopicCount<=1&&candidateTopic&&candidateTopic!==previousTopic;
+  const nextQuestion=isHardQuestion(question)||repeated||disconnected?contextualEverydayQuestion(screening):question;
+  return lastAnswer?`${friendlyLead(lastAnswer)}${nextQuestion}`:nextQuestion;
 }
 
 const qualityFallbackQuestion=getFallbackQuestion;
