@@ -30,6 +30,15 @@ def generate_initial_question(session: SessionState) -> str:
     """
     edu_level = session.education_level
     opening = OPENING_MESSAGES.get(edu_level, OPENING_MESSAGES["secondary_low"])
+    notice = (
+        "这次聊天的轮数不是固定的，至少会聊 10 轮，最多 20 轮。"
+        "我会根据您回答的信息是否充分，适时结束。"
+    )
+    greeting = "您好，我是小忆。"
+    if opening.startswith(greeting):
+        opening = greeting + notice + opening[len(greeting):]
+    else:
+        opening = notice + opening
     session.asked_questions.append(opening)
     return opening
 

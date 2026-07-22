@@ -133,3 +133,9 @@ const renderTrendSummaryByRisk=renderTrendSummary;
 renderTrendSummary=function(){renderTrendSummaryByRisk();applyTrendRiskTheme()};
 if(state.report)renderReport();
 if(state.active==="history")renderHistory();
+
+const roundNotice="这次聊天的轮数不是固定的，至少会聊 10 轮，最多 20 轮。我会根据您回答的信息是否充分，适时结束。";
+function withRoundNotice(message=""){if(message.includes("轮数不是固定的")||message.includes("轮数不固定"))return message;const greeting="您好，我是小忆。";return message.startsWith(greeting)?greeting+roundNotice+message.slice(greeting.length):roundNotice+message}
+topics[0][1]=withRoundNotice("您好，我是小忆。咱们不用紧张，就像聊家常一样说说最近的生活状态。您这两天感觉怎么样？");
+const requestAgentWithRoundNotice=agentPost;
+agentPost=async function(path,body={}){const data=await requestAgentWithRoundNotice(path,body);if(path==="/start"&&data?.message)data.message=withRoundNotice(data.message);return data};
