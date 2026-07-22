@@ -4158,3 +4158,170 @@ body.elderly .dimension-dots {
     box-shadow: none;
   }
 }
+
+/* Professional desktop trend dashboard */
+@media (min-width: 1040px) {
+  body:not(.elderly) #historyView {
+    height: calc(100vh - 136px);
+    min-height: 0;
+    padding: 18px 20px 28px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    background: #eef3f4;
+  }
+
+  body:not(.elderly) #historyView .head-row {
+    min-height: 46px;
+    margin: 0 0 12px;
+    align-items: center;
+  }
+
+  body:not(.elderly) #historyView .head-row h2 {
+    color: #183b49;
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  body:not(.elderly) #historyView .periods {
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid #d6e2e5;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  body:not(.elderly) #historyView .periods button {
+    min-width: 64px;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 6px;
+    color: #667b87;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  body:not(.elderly) #historyView .periods button.active {
+    color: #176c70;
+    background: #dff6f0;
+  }
+
+  body:not(.elderly) #historyView .trend-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  body:not(.elderly) #historyView .trend-summary article {
+    min-height: 98px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 2px 12px;
+    padding: 16px 18px;
+    border: 1px solid #d5e2e5;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(49,84,98,.05);
+  }
+
+  body:not(.elderly) #historyView .trend-summary article > span {
+    color: #637986;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  body:not(.elderly) #historyView .trend-summary article > strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    color: #174e5d;
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  body:not(.elderly) #historyView .trend-summary article > strong.up {
+    color: #16856e;
+  }
+
+  body:not(.elderly) #historyView .trend-summary article > strong.down {
+    color: #b4533f;
+  }
+
+  body:not(.elderly) #historyView .trend-summary article > strong.steady {
+    color: #657985;
+  }
+
+  body:not(.elderly) #historyView .trend-summary article > small {
+    color: #8a9aa3;
+    font-size: 12px;
+  }
+
+  body:not(.elderly) #historyView > .panel {
+    height: 326px;
+    padding: 18px 18px 12px;
+    overflow: hidden;
+    border: 1px solid #d5e2e5;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(49,84,98,.05);
+  }
+
+  body:not(.elderly) #historyView #trendChart {
+    display: block;
+    width: 100%;
+    height: 286px;
+  }
+
+  body:not(.elderly) #historyView .history {
+    gap: 0;
+    margin-top: 14px;
+    overflow: hidden;
+    border: 1px solid #d5e2e5;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(49,84,98,.05);
+  }
+
+  body:not(.elderly) #historyView .history-item {
+    min-height: 78px;
+    padding: 13px 18px;
+    border: 0;
+    border-bottom: 1px solid #e2eaec;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #historyView .history-item:last-child {
+    border-bottom: 0;
+  }
+
+  body:not(.elderly) #historyView .history-item:hover {
+    border-color: #e2eaec;
+    background: #f7fbfa;
+    box-shadow: inset 3px 0 0 #4eb4ad;
+  }
+
+  body:not(.elderly) #historyView .history-item div > strong {
+    color: #294b59;
+    font-size: 15px;
+  }
+
+  body:not(.elderly) #historyView .history-item p {
+    color: #526b78;
+    font-size: 14px;
+  }
+
+  body:not(.elderly) #historyView .history-item span {
+    margin-top: 1px;
+    color: #8a9aa3;
+    font-size: 12px;
+  }
+
+  body:not(.elderly) #historyView .history-item > strong {
+    color: #176c7d;
+    font-size: 22px;
+  }
+}

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>忆语安康网页版</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=20260722-1">
 </head>
 <body>
   <header class="topbar">
@@ -144,6 +144,11 @@
 
     <section id="historyView" class="view hidden">
       <div class="head-row"><h2>历史评分趋势</h2><div class="periods"><button data-period="7">7天</button><button data-period="30">30天</button><button data-period="90">90天</button></div></div>
+      <div class="trend-summary" aria-label="趋势概览">
+        <article><span>最新评分</span><strong id="trendLatestScore">--</strong><small>满分 100</small></article>
+        <article><span>较上次变化</span><strong id="trendScoreChange">--</strong><small id="trendChangeHint">等待更多记录</small></article>
+        <article><span>评估次数</span><strong id="trendAssessmentCount">0</strong><small id="trendPeriodHint">近 30 天</small></article>
+      </div>
       <div class="panel"><canvas id="trendChart" width="900" height="320"></canvas></div>
       <div id="historyList" class="history"></div>
     </section>
@@ -182,6 +187,6 @@
     <button data-nav="mine">我的</button>
   </nav>
 
-  <script src="./app.js"></script>
+  <script src="./app.js?v=20260722-1"></script>
 </body>
 </html>
