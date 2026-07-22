@@ -4941,3 +4941,71 @@ body.recording-now #screeningView .recording-stage p span {
     font-size: 23px;
   }
 }
+
+/* Place the screening notice in the center of the main header. */
+#mainHeader > .disclaimer-bar {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 720px;
+  min-height: 42px;
+  margin: 0 18px;
+  padding: 5px 12px;
+  flex: 1 1 520px;
+  border: 1px solid rgba(255, 239, 186, .72);
+  border-radius: 8px;
+  background: rgba(255, 250, 232, .94);
+  box-shadow: 0 7px 18px rgba(71, 109, 116, .12);
+}
+
+#mainHeader > .brand,
+#mainHeader > .top-actions {
+  flex: 0 0 auto;
+}
+
+#mainHeader > .brand h1 {
+  white-space: nowrap;
+}
+
+#mainHeader > .disclaimer-bar span {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  flex-basis: 26px;
+  margin: 0;
+  font-size: 16px;
+}
+
+#mainHeader > .disclaimer-bar p {
+  width: auto;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #805b12;
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+@media (min-width: 1040px) {
+  body:not(.elderly):not([data-active="auth"]) #screeningView,
+  body:not(.elderly):not([data-active="auth"]) #reportView,
+  body:not(.elderly):not([data-active="auth"]) #trendView,
+  body:not(.elderly):not([data-active="auth"]) #mineView {
+    height: calc(100vh - 88px);
+  }
+}
+
+@media (max-width: 820px) {
+  #mainHeader > .disclaimer-bar {
+    width: 100%;
+    max-width: none;
+    margin: 4px 0;
+    flex-basis: auto;
+  }
+
+  #mainHeader > .disclaimer-bar p {
+    font-size: 13px;
+  }
+}
