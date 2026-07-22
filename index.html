@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>忆语安康网页版</title>
-  <link rel="stylesheet" href="./styles.css?v=20260722-16">
+  <link rel="stylesheet" href="./styles.css?v=20260722-17">
 </head>
 <body>
   <header id="mainHeader" class="topbar">
@@ -119,7 +119,20 @@
         <div class="cards">
           <article class="panel wide voice-summary"><div class="section-title-row"><h3>语音解读</h3><button id="playSummaryBtn" class="primary big-play">播放解读</button></div><p id="elderVoiceText"></p></article>
           <article class="panel"><h3>行动建议</h3><p id="actionAdvice"></p><ol id="actionSteps"></ol></article>
-          <article class="panel"><h3>能力评估</h3><p>表达力：<b id="expressionScore"></b></p><p>思维连贯性：<b id="logicScore"></b></p></article>
+          <article class="panel ability-card">
+            <div class="ability-title"><h3>能力评估</h3><span>本次表现</span></div>
+            <div class="ability-metrics">
+              <div class="ability-metric expression">
+                <div class="ability-meta"><div><span>表达力</span><small id="expressionStatus">--</small></div><b id="expressionScore">--</b></div>
+                <div class="ability-track" aria-hidden="true"><span id="expressionFill"></span></div>
+              </div>
+              <div class="ability-metric coherence">
+                <div class="ability-meta"><div><span>思维连贯性</span><small id="logicStatus">--</small></div><b id="logicScore">--</b></div>
+                <div class="ability-track" aria-hidden="true"><span id="logicFill"></span></div>
+              </div>
+            </div>
+            <p class="ability-note">分数越高，代表本次语言表现越好</p>
+          </article>
           <article class="panel wide"><h3>三维度分析</h3><div id="dimensionBars" class="bars"></div></article>
           <article class="panel wide"><h3>9 项子指标</h3><div id="subItemScores" class="subgrid"></div></article>
           <article class="panel wide"><h3>观察点与建议</h3><ul id="observations"></ul><ul id="suggestions"></ul></article>
@@ -194,6 +207,6 @@
     <div class="about-dialog-foot"><span>版本 v1.0.0</span><button id="aboutDialogConfirm" class="primary" type="button">知道了</button></div>
   </dialog>
 
-  <script src="./app.js?v=20260722-24"></script>
+  <script src="./app.js?v=20260722-25"></script>
 </body>
 </html>

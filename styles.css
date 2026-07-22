@@ -5597,3 +5597,129 @@ body:not([data-active="screening"]) #playSummaryBtn {
   color: #fff;
   opacity: 1;
 }
+
+/* Ability assessment */
+#reportView .ability-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 258px;
+  background: #fff;
+  overflow: hidden;
+}
+
+#reportView .ability-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e1eaed;
+}
+
+#reportView .ability-title h3 {
+  margin: 0;
+}
+
+#reportView .ability-title > span {
+  color: #55717c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#reportView .ability-metrics {
+  display: grid;
+  gap: 16px;
+  padding: 18px 0 14px;
+}
+
+#reportView .ability-metric {
+  min-width: 0;
+}
+
+#reportView .ability-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 9px;
+}
+
+#reportView .ability-meta > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+#reportView .ability-meta span {
+  color: #173d4b;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+#reportView .ability-meta small {
+  color: #68808a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+#reportView .ability-meta b {
+  flex: 0 0 auto;
+  color: #123d4d;
+  font-size: 25px;
+  line-height: 1;
+}
+
+#reportView .ability-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #e8eff1;
+}
+
+#reportView .ability-track span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  transition: width .45s ease;
+}
+
+#reportView .ability-metric.expression .ability-track span {
+  background: #168c7c;
+}
+
+#reportView .ability-metric.coherence .ability-track span {
+  background: #337fa2;
+}
+
+#reportView .ability-note {
+  margin: auto 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #edf2f3;
+  color: #6b818a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+body.elderly #reportView .ability-card {
+  min-height: 320px;
+}
+
+body.elderly #reportView .ability-title > span,
+body.elderly #reportView .ability-meta small,
+body.elderly #reportView .ability-note {
+  font-size: 17px;
+}
+
+body.elderly #reportView .ability-meta span {
+  font-size: 22px;
+}
+
+body.elderly #reportView .ability-meta b {
+  font-size: 32px;
+}
+
+body.elderly #reportView .ability-track {
+  height: 12px;
+  border-radius: 6px;
+}

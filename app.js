@@ -223,3 +223,8 @@ function cleanSavedConversation(messages=[]){const seenAi=new Set(),cleaned=[];f
 const cleanedMessages=cleanSavedConversation(state.screening?.messages||[]);
 if(cleanedMessages.length!==(state.screening?.messages||[]).length){state.screening.messages=cleanedMessages;save();if(state.active==="screening")renderChat()}
 warmVoiceService();
+
+function abilityStatus(score){return score>=80?"表现较好":score>=65?"整体平稳":score>=50?"建议关注":"需要留意"}
+const renderReportWithAbility=renderReport;
+renderReport=function(){renderReportWithAbility();if(!state.report)return;const expression=Math.round(state.report.dim.vocabulary.compositeScore*10),logic=Math.round(state.report.dim.syntax.compositeScore*10);$("#expressionStatus").textContent=abilityStatus(expression);$("#logicStatus").textContent=abilityStatus(logic);$("#expressionFill").style.width=`${expression}%`;$("#logicFill").style.width=`${logic}%`}
+if(state.report)renderReport();
