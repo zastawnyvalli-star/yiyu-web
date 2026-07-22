@@ -142,3 +142,56 @@ function withRoundNotice(message=""){if(message.includes("轮数不是固定的"
 topics[0][1]=withRoundNotice("您好，我是小忆。咱们不用紧张，就像聊家常一样说说最近的生活状态。您这两天感觉怎么样？");
 const requestAgentWithRoundNotice=agentPost;
 agentPost=async function(path,body={}){const data=await requestAgentWithRoundNotice(path,body);if(path==="/start"&&data?.message)data.message=withRoundNotice(data.message);return data};
+
+function compactConversationText(text=""){return String(text).replace(/[，。！？、,.!?；;：:\s…]+/g,"")}
+function isUnusableReply(text=""){const value=compactConversationText(text);return !value||/^[?？!！.。…]+$/.test(String(text).trim())||/^(不知道|不清楚|没听懂|听不懂|什么意思|怎么说|不会说|不想说)$/.test(value)}
+function questionSimilarity(left="",right=""){const a=compactConversationText(left),b=compactConversationText(right);if(!a||!b)return 0;if(a===b)return 1;if(Math.min(a.length,b.length)>=8&&(a.includes(b)||b.includes(a)))return .92;const pairs=value=>{const result=new Set();for(let i=0;i<value.length-1;i++)result.add(value.slice(i,i+2));return result},pa=pairs(a),pb=pairs(b);let shared=0;pa.forEach(pair=>{if(pb.has(pair))shared++});return shared/Math.max(1,Math.min(pa.size,pb.size))}
+function isGenericQuestion(question=""){return /再多说一点|举个例子|详细说说|具体是什么样|最近一次是什么情况|后来怎么样|还有其他类似/.test(question)}
+
+const qualityQuestionBank=[
+  "最近睡眠怎么样？晚上容易醒吗？",
+  "平时常用的东西，比如钥匙或眼镜，会不会偶尔找不到？",
+  "您知道今天大概是星期几、几月份吗？",
+  "最近跟家人聊天时，说话和找词还顺畅吗？",
+  "出门买东西时，算账和找钱还顺手吗？",
+  "最近心情怎么样？开心放松的时候多吗？",
+  "您平时一天三餐规律吗？胃口怎么样？",
+  "如果明天要办两三件事，您会怎么安排先后顺序？",
+  "昨天吃了什么，您现在还能大概想起来吗？",
+  "最近出门散步或买菜时，熟悉的路线还记得清楚吗？",
+  "看电视或听别人讲一件事时，内容一般能跟得上吗？",
+  "做完饭或出门前，您会记得检查火、电和门窗吗？",
+  "最近有没有一件让您觉得开心的小事？",
+  "白天精神怎么样？会不会经常觉得困？"
+];
+
+function pickFreshQualityQuestion(screening){const used=(screening.messages||[]).filter(message=>message[0]==="ai").map(message=>message[1]);const offset=(screening.answers||[]).length%qualityQuestionBank.length;for(let index=0;index<qualityQuestionBank.length;index++){const question=qualityQuestionBank[(offset+index)%qualityQuestionBank.length];if(!used.some(previous=>questionSimilarity(question,previous)>=.52))return question}return qualityQuestionBank[offset]}
+function simpleRephrase(question,screening){if(/感觉|近况|生活状态|怎么样/.test(question))return"没关系，简单说说就行。您最近吃饭和睡觉都还好吗？";if(/忘|记不清|找不到|放哪/.test(question))return"您可以只回答有或没有：最近会不会找不到刚放下的东西？";if(/睡|醒|失眠/.test(question))return"您昨晚睡得好吗？回答好或不好都可以。";if(/心情|担心|开心/.test(question))return"您最近心情还好吗？回答还好、一般或不太好都可以。";return`没关系，咱们换个简单的问题。${pickFreshQualityQuestion(screening)}`}
+function improveGeneratedQuestion(candidate,screening){
+  const question=(candidate||"").trim();
+  const used=(screening.messages||[]).filter(message=>message[0]==="ai").map(message=>message[1]);
+  const lastRecord=screening.answers?.[screening.answers.length-1]||{};
+  const lastAnswer=lastRecord.text||"";
+  const previousQuestion=lastRecord.question||"";
+  const recent=used.slice(-3);
+  if(isGenericQuestion(question)){
+    if(/身体.*(不错|还好|舒服)|没啥难受|没有难受/.test(lastAnswer))return"听起来身体还舒服。最近睡眠怎么样，晚上容易醒吗？";
+    if(/还不错|挺好|还好|挺不错|一般/.test(lastAnswer)&&/睡|醒|失眠|做梦/.test(previousQuestion))return"听起来睡得还可以。最近一周晚上大概会醒几次？";
+    if(/还不错|挺好|还好|挺不错/.test(lastAnswer)&&/感觉|近况|生活状态|怎么样/.test(previousQuestion))return"那挺好。平时常用的东西，比如钥匙或眼镜，会不会偶尔找不到？";
+  }
+  if(!question||used.some(previous=>questionSimilarity(question,previous)>=.52))return pickFreshQualityQuestion(screening);
+  if(isGenericQuestion(question)&&recent.some(previous=>isGenericQuestion(previous)))return pickFreshQualityQuestion(screening);
+  return question;
+}
+
+const qualityFallbackQuestion=getFallbackQuestion;
+getFallbackQuestion=function(screening){return improveGeneratedQuestion(qualityFallbackQuestion(screening),screening)};
+const qualityAgentRequest=agentPost;
+agentPost=async function(path,body={}){const data=await qualityAgentRequest(path,body);if(path==="/answer"&&data?.shouldContinue!==false)data.nextQuestion=improveGeneratedQuestion(data?.nextQuestion||"",state.screening);return data};
+
+const validatedSend=send;
+send=async function(text,audioUrl=""){const value=String(text||"").trim();if(!value&&!audioUrl)return validatedSend(value,audioUrl);if(value!=="请稍后"&&isUnusableReply(value)){const lastAi=[...(state.screening.messages||[])].reverse().find(message=>message[0]==="ai")?.[1]||"",recentInvalid=(state.screening.messages||[]).slice(-4).filter(message=>message[0]==="user"&&isUnusableReply(message[1])).length;if(!(state.screening.messages.at(-1)?.[0]==="user"&&state.screening.messages.at(-1)?.[1]===value))state.screening.messages.push(["user",value||"没有听清",audioUrl]);const reply=recentInvalid?`没关系，我们换个话题。${pickFreshQualityQuestion(state.screening)}`:simpleRephrase(lastAi,state.screening);state.screening.messages.push(["ai",reply]);save();renderChat();autoSpeak(reply);return}return validatedSend(value,audioUrl)};
+
+function cleanSavedConversation(messages=[]){const seenAi=new Set(),cleaned=[];for(const message of messages){const normalized=compactConversationText(message?.[1]||"");if(message?.[0]==="ai"){if(normalized&&seenAi.has(normalized))continue;if(normalized)seenAi.add(normalized)}if(message?.[0]==="user"&&isUnusableReply(message[1])&&cleaned.at(-1)?.[0]==="user"&&isUnusableReply(cleaned.at(-1)?.[1]))continue;cleaned.push(message)}return cleaned}
+const cleanedMessages=cleanSavedConversation(state.screening?.messages||[]);
+if(cleanedMessages.length!==(state.screening?.messages||[]).length){state.screening.messages=cleanedMessages;save();if(state.active==="screening")renderChat()}

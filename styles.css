@@ -5307,3 +5307,266 @@ body.elderly #reportView .score span {
     font-size: 38px;
   }
 }
+
+/* Professional centered authentication flow. */
+body[data-active="auth"] {
+  min-height: 100vh;
+  background: #e5eef0 !important;
+}
+
+body[data-active="auth"] main {
+  min-height: 100vh;
+}
+
+body[data-active="auth"] #authView,
+body[data-active="auth"] #authView.auth {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  padding: 36px 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 720px);
+  place-content: center;
+  border: 0;
+  border-radius: 0;
+  background: #e5eef0;
+  box-shadow: none;
+  overflow-y: auto;
+}
+
+body[data-active="auth"] #authView::before,
+body[data-active="auth"] #authView::after {
+  display: none !important;
+}
+
+body[data-active="auth"] #authView .login-panel,
+body[data-active="auth"] #authView .profile-panel {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #cbdadd;
+  border-top: 5px solid #258b91;
+  border-radius: 8px;
+  background: #fff;
+  color: #183b49;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 22px 54px rgba(38, 77, 91, .15);
+}
+
+body[data-active="auth"] #authView .login-panel {
+  max-width: 540px;
+  min-height: 480px;
+  padding: 46px 54px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+body[data-active="auth"] #authView .profile-panel {
+  max-width: 720px;
+  max-height: none;
+  padding: 32px 40px 36px;
+  gap: 13px;
+  overflow: visible;
+}
+
+body[data-active="auth"] #authView .login-panel::before,
+body[data-active="auth"] #authView .profile-panel::before,
+body[data-active="auth"] #authView .login-panel::after,
+body[data-active="auth"] #authView .profile-panel::after {
+  display: none;
+}
+
+body[data-active="auth"] .auth-mark {
+  min-height: 0;
+  margin-bottom: 8px;
+  padding: 0;
+  display: grid;
+  justify-items: center;
+  gap: 11px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-active="auth"] .auth-mark img {
+  width: 82px;
+  height: 82px;
+  display: block;
+  border: 1px solid #b9d4d8;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(35, 104, 121, .14);
+}
+
+body[data-active="auth"] .auth-mark span {
+  display: block;
+  color: #1a5969;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+body[data-active="auth"] #authView .login-panel h2,
+body[data-active="auth"] #authView .profile-panel h2 {
+  margin: 0;
+  color: #173b49;
+  font-size: 32px;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-align: center;
+  text-shadow: none;
+}
+
+body[data-active="auth"] #authView .login-panel .muted,
+body[data-active="auth"] #authView .profile-panel .muted {
+  margin: 0 0 12px;
+  color: #69808b;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+body[data-active="auth"] #authView .login-panel .login-row {
+  width: 100%;
+  max-width: none;
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+body[data-active="auth"] #authView .login-panel .login-row button,
+body[data-active="auth"] #authView .profile-panel .primary {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 7px;
+  font-size: 18px;
+  font-weight: 800;
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+body[data-active="auth"] #authView .login-panel [data-login="wechat"],
+body[data-active="auth"] #authView .profile-panel .primary {
+  border: 1px solid #16856e;
+  background: #16856e;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(22, 133, 110, .18);
+}
+
+body[data-active="auth"] #authView .login-panel [data-login="phone"] {
+  border: 1px solid #b9cdd2;
+  background: #f7fafb;
+  color: #285765;
+  box-shadow: none;
+}
+
+body[data-active="auth"] #authView .login-panel [data-login="wechat"]:hover,
+body[data-active="auth"] #authView .profile-panel .primary:hover {
+  border-color: #106d5c;
+  background: #106d5c;
+  box-shadow: 0 9px 20px rgba(22, 133, 110, .22);
+  transform: none;
+}
+
+body[data-active="auth"] #authView .login-panel [data-login="phone"]:hover {
+  border-color: #88adb5;
+  background: #eef5f6;
+  box-shadow: none;
+  transform: none;
+}
+
+body[data-active="auth"] #authView label {
+  gap: 6px;
+  color: #365663;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+body[data-active="auth"] #authView input,
+body[data-active="auth"] #authView select {
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid #c5d6da;
+  border-radius: 6px;
+  background: #fbfdfd;
+  color: #203f4c;
+  box-shadow: none;
+}
+
+body[data-active="auth"] #authView input::placeholder {
+  color: #94a5ad;
+}
+
+body[data-active="auth"] #authView input:focus,
+body[data-active="auth"] #authView select:focus {
+  border-color: #258b91;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 139, 145, .12);
+}
+
+body[data-active="auth"] #authView select option {
+  color: #203f4c;
+  background: #fff;
+}
+
+body[data-active="auth"] #authView .grid2 {
+  gap: 14px;
+}
+
+@media (max-width: 820px) {
+  body[data-active="auth"] #authView,
+  body[data-active="auth"] #authView.auth {
+    padding: 20px 14px;
+  }
+
+  body[data-active="auth"] #authView .login-panel,
+  body[data-active="auth"] #authView .profile-panel {
+    width: 100%;
+    padding: 30px 22px;
+  }
+
+  body[data-active="auth"] #authView .login-panel {
+    min-height: 440px;
+  }
+
+  body[data-active="auth"] #authView .login-panel h2,
+  body[data-active="auth"] #authView .profile-panel h2 {
+    font-size: 28px;
+  }
+
+  body[data-active="auth"] #authView .profile-panel .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+body[data-active="auth"] #authView .login-panel .login-row button[data-login="wechat"],
+body[data-active="auth"] #authView .profile-panel button.primary {
+  border: 1px solid #16856e;
+  background: #16856e;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(22, 133, 110, .18);
+}
+
+body[data-active="auth"] #authView .login-panel .login-row button[data-login="phone"] {
+  border: 1px solid #b9cdd2;
+  background: #f7fafb;
+  color: #285765;
+  box-shadow: none;
+}
+
+body[data-active="auth"] #authView .login-panel .login-row button[data-login="wechat"]:hover,
+body[data-active="auth"] #authView .profile-panel button.primary:hover {
+  border-color: #106d5c;
+  background: #106d5c;
+}
+
+body[data-active="auth"] #authView .login-panel .login-row button[data-login="phone"]:hover {
+  border-color: #88adb5;
+  background: #eef5f6;
+}
