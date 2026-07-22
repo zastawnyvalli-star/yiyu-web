@@ -109,3 +109,11 @@ $("#aboutBtn").onclick=openAboutDialog;
 $("#aboutDialogClose").onclick=closeAboutDialog;
 $("#aboutDialogConfirm").onclick=closeAboutDialog;
 aboutDialog?.addEventListener("click",event=>{if(event.target===aboutDialog)closeAboutDialog()});
+
+function lifestyleQuestionFor(screening){const count=screening.answers.length,last=screening.answers[count-1],asked=screening.answers.map(answer=>answer.question).filter(Boolean),slots=[2,5,8,11,14,17],questions=["家里晚辈平时谁陪您聊天比较多？最近一次见面时你们一起做了什么？","如果做一道您熟悉的菜，您一般先准备什么，再做什么？","最近一次全家一起吃饭是什么时候？您还记得当时有哪些人在吗？","如果明天家里来客人吃饭，您会提前准备哪些事情？","家里晚辈来看您时，你们通常会一起做些什么？","出门买菜前，您一般会怎么准备？到了市场通常先做什么？"],slotIndex=slots.indexOf(count);return slotIndex>=0&&last?.text?.trim().length>15&&!asked.includes(questions[slotIndex])?questions[slotIndex]:""}
+
+const getStandardFallbackQuestion=getFallbackQuestion;
+getFallbackQuestion=function(screening){return lifestyleQuestionFor(screening)||getStandardFallbackQuestion(screening)};
+
+const requestAdaptiveAgent=agentPost;
+agentPost=async function(path,body={}){const data=await requestAdaptiveAgent(path,body);if(path==="/answer"&&data?.shouldContinue!==false){const lifestyleQuestion=lifestyleQuestionFor(state.screening);if(lifestyleQuestion)data.nextQuestion=lifestyleQuestion}return data};
