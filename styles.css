@@ -5571,8 +5571,14 @@ body[data-active="auth"] #authView .login-panel .login-row button[data-login="ph
   background: #eef5f6;
 }
 
-body:not([data-active="screening"]) #playSummaryBtn {
+body:not([data-active="report"]) #playSummaryBtn {
   display: none !important;
+}
+
+#reportView #playSummaryBtn.playing {
+  border-color: #b91c1c;
+  background: #dc2626;
+  color: #fff;
 }
 
 /* Keep the chat playback control visible against pale message bubbles. */
