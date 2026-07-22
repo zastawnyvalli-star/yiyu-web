@@ -5009,3 +5009,66 @@ body.recording-now #screeningView .recording-stage p span {
     font-size: 13px;
   }
 }
+
+/* Refined report summary: clear hierarchy with protected edge spacing. */
+@media (min-width: 1040px) {
+  body:not(.elderly) #reportView .report-head {
+    min-height: 176px;
+    padding: 26px 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 132px;
+    align-items: center;
+    column-gap: 36px;
+  }
+
+  body:not(.elderly) #reportView .report-head > div:first-child {
+    width: 100%;
+    padding-left: 2px;
+  }
+
+  body:not(.elderly) #reportView .report-head .warn {
+    min-height: 26px;
+    margin: 0 0 10px;
+    padding: 3px 10px;
+    border: 1px solid color-mix(in srgb, var(--risk-color, #16856e) 24%, white);
+    border-radius: 5px;
+    background: var(--risk-soft, #eaf8f3);
+    color: var(--risk-color, #16856e);
+    font-size: 13px;
+  }
+
+  body:not(.elderly) #reportView .report-head .warn::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  body:not(.elderly) #reportView .report-head h2 {
+    margin: 0 0 5px;
+    font-size: 32px;
+  }
+
+  body:not(.elderly) #reportView #reportDate {
+    margin-bottom: 8px;
+  }
+
+  body:not(.elderly) #reportView #riskHint {
+    max-width: 880px;
+    margin-top: 0;
+    line-height: 1.55;
+  }
+
+  body:not(.elderly) #reportView .score {
+    width: 132px;
+    height: 132px;
+    min-width: 132px;
+    margin-right: 2px;
+  }
+
+  body:not(.elderly) #reportView .score strong {
+    font-size: 36px;
+  }
+}
