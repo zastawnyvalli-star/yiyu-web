@@ -4325,3 +4325,328 @@ body.elderly .dimension-dots {
     font-size: 22px;
   }
 }
+
+/* Professional desktop profile center */
+@media (min-width: 1040px) {
+  body:not(.elderly) #mineView {
+    height: calc(100vh - 136px);
+    min-height: 0;
+    padding: 20px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    background: #eef3f4;
+  }
+
+  body:not(.elderly) #mineView .mine {
+    position: relative;
+    min-height: 152px;
+    margin: 0 0 16px;
+    padding: 26px 30px;
+    gap: 20px;
+    overflow: hidden;
+    border: 1px solid #cfe0e3;
+    border-radius: 8px;
+    background:
+      linear-gradient(110deg, #fff 0%, #f2faf9 72%, #e3f5f1 100%);
+    box-shadow: 0 7px 22px rgba(47,83,98,.06);
+  }
+
+  body:not(.elderly) #mineView .mine::after {
+    content: "个人健康档案";
+    position: absolute;
+    top: 24px;
+    right: 28px;
+    min-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    border: 1px solid #bde5dc;
+    border-radius: 5px;
+    background: #eaf9f5;
+    color: #187366;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  body:not(.elderly) #mineView .avatar {
+    width: 76px;
+    height: 76px;
+    flex: 0 0 76px;
+    border: 1px solid #bce8df;
+    background: #dff8f3;
+    color: #0f766e;
+    font-size: 30px;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #mineView #mineName {
+    margin-bottom: 5px;
+    color: #183b49;
+    font-size: 28px;
+  }
+
+  body:not(.elderly) #mineView #mineProfile {
+    color: #647985;
+    font-size: 15px;
+    text-align: left;
+  }
+
+  body:not(.elderly) #mineView .menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #mineView .menu button {
+    position: relative;
+    min-height: 92px;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-content: center;
+    justify-content: stretch;
+    gap: 2px 14px;
+    padding: 16px 20px;
+    border: 1px solid #d4e2e5;
+    border-radius: 8px;
+    background: #fff;
+    color: #294b59;
+    box-shadow: 0 6px 18px rgba(49,84,98,.05);
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  body:not(.elderly) #mineView .menu button::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 7px;
+    background: #e8f6f4;
+    color: #247e83;
+    box-shadow: inset 0 0 0 1px #cce9e4;
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  body:not(.elderly) #mineView .menu #editProfileBtn::before { content: "档"; }
+  body:not(.elderly) #mineView .menu button[data-nav="history"]::before { content: "记"; }
+  body:not(.elderly) #mineView .menu #mineClinicBtn::before { content: "诊"; }
+  body:not(.elderly) #mineView .menu #aboutBtn::before { content: "i"; }
+  body:not(.elderly) #mineView .menu #clearDataBtn::before { content: "退"; }
+
+  body:not(.elderly) #mineView .menu button::after {
+    content: "›";
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    color: #94a5ad;
+    font-size: 24px;
+    font-weight: 400;
+    transform: translateY(-50%);
+  }
+
+  body:not(.elderly) #mineView .menu button:hover {
+    border-color: #9fd6cf;
+    background: #f8fcfb;
+    box-shadow: 0 9px 24px rgba(49,84,98,.08);
+    transform: translateY(-1px);
+  }
+
+  body:not(.elderly) #mineView .menu button span {
+    grid-column: 2;
+    color: #84959e;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  body:not(.elderly) #mineView .menu #clearDataBtn {
+    grid-column: 1 / -1;
+    min-height: 64px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    border-color: #ecd9d6;
+    color: #9a493f;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #mineView .menu #clearDataBtn::before {
+    background: #fff3f1;
+    box-shadow: inset 0 0 0 1px #efd9d5;
+  }
+
+  body:not(.elderly) #mineView .foot {
+    margin-top: 14px;
+    color: #84959e;
+    font-size: 13px;
+    text-align: center;
+  }
+}
+
+/* About dialog and fixed service endpoints */
+.about-dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-height: min(760px, calc(100vh - 40px));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #cbdde1;
+  border-radius: 8px;
+  background: #fff;
+  color: #183b49;
+  box-shadow: 0 28px 80px rgba(18,52,67,.28);
+}
+
+.about-dialog::backdrop {
+  background: rgba(16, 38, 49, .54);
+  backdrop-filter: blur(3px);
+}
+
+.about-dialog-head,
+.about-dialog-foot,
+.about-dialog-brand {
+  display: flex;
+  align-items: center;
+}
+
+.about-dialog-head {
+  min-height: 84px;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #dbe6e8;
+  background: #f5faf9;
+}
+
+.about-dialog-brand {
+  gap: 12px;
+}
+
+.about-dialog-brand img {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+}
+
+.about-dialog-brand strong,
+.about-dialog-brand span {
+  display: block;
+}
+
+.about-dialog-brand strong {
+  font-size: 20px;
+}
+
+.about-dialog-brand span {
+  margin-top: 2px;
+  color: #758892;
+  font-size: 12px;
+}
+
+.dialog-close {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #e9f1f2;
+  color: #526b77;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.about-dialog-body {
+  max-height: calc(100vh - 190px);
+  padding: 22px;
+  overflow-y: auto;
+}
+
+.about-dialog-body > p {
+  color: #4c6571;
+  font-size: 15px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+.about-endpoints {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #d8e5e7;
+  border-radius: 8px;
+  background: #f8fbfb;
+}
+
+.about-endpoints h3 {
+  margin: 0 0 14px;
+  font-size: 17px;
+}
+
+.about-endpoints label {
+  gap: 6px;
+  color: #526b77;
+  font-size: 13px;
+}
+
+.about-endpoints label + p {
+  margin: 5px 0 14px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.about-endpoints input {
+  height: 42px;
+  border: 1px solid #d3e1e4;
+  border-radius: 6px;
+  background: #fff;
+  color: #35515e;
+  font-size: 14px;
+  font-family: Consolas, monospace;
+}
+
+.about-notice {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-left: 4px solid #e2b34f;
+  border-radius: 6px;
+  background: #fffaf0;
+  color: #755a23;
+}
+
+.about-notice strong {
+  font-size: 14px;
+}
+
+.about-notice p {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.65;
+  text-align: left;
+}
+
+.about-dialog-foot {
+  min-height: 66px;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-top: 1px solid #dbe6e8;
+  background: #fff;
+}
+
+.about-dialog-foot span {
+  color: #84959e;
+  font-size: 13px;
+}
+
+.about-dialog-foot .primary {
+  min-height: 40px;
+  padding: 0 20px;
+  border-radius: 7px;
+  box-shadow: none;
+  font-size: 14px;
+}

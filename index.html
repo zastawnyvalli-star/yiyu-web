@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>忆语安康网页版</title>
-  <link rel="stylesheet" href="./styles.css?v=20260722-1">
+  <link rel="stylesheet" href="./styles.css?v=20260722-2">
 </head>
 <body>
   <header class="topbar">
@@ -155,19 +155,6 @@
 
     <section id="mineView" class="view hidden">
       <div class="panel mine"><div class="avatar">忆</div><div><h2 id="mineName">请先登录</h2><p id="mineProfile">个人信息</p></div></div>
-      <div class="panel api-settings">
-        <h3>Web 接口</h3>
-        <div class="clinic-search">
-          <input id="apiBaseInput" placeholder="语音接口地址，如 https://yiyu-tts.onrender.com">
-          <button id="saveApiBaseBtn" class="primary" type="button">保存</button>
-        </div>
-        <p id="apiBaseHint" class="muted"></p>
-        <div class="clinic-search">
-          <input id="agentBaseInput" placeholder="智能体接口地址，如 http://127.0.0.1:8899">
-          <button id="saveAgentBaseBtn" class="primary" type="button">保存</button>
-        </div>
-        <p id="agentBaseHint" class="muted"></p>
-      </div>
       <div class="panel menu">
         <button id="editProfileBtn">修改个人信息 <span>编辑资料</span></button>
         <button data-nav="history">历史评估记录 <span>趋势分析</span></button>
@@ -187,6 +174,27 @@
     <button data-nav="mine">我的</button>
   </nav>
 
-  <script src="./app.js?v=20260722-1"></script>
+  <dialog id="aboutDialog" class="about-dialog">
+    <div class="about-dialog-head">
+      <div class="about-dialog-brand"><img src="./logo.jpg" alt="忆语安康"><div><strong>忆语安康</strong><span>认知健康筛查系统</span></div></div>
+      <button id="aboutDialogClose" class="dialog-close" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="about-dialog-body">
+      <p>面向老年人的日常认知健康初筛工具，通过自然对话、语音交互和趋势记录，为本人和家人提供持续观察参考。</p>
+      <section class="about-endpoints" aria-labelledby="endpointTitle">
+        <h3 id="endpointTitle">服务接口</h3>
+        <label>语音播报与识别<input id="apiBaseInput" readonly></label>
+        <p id="apiBaseHint" class="muted"></p>
+        <label>智能体追问与报告<input id="agentBaseInput" readonly></label>
+        <p id="agentBaseHint" class="muted"></p>
+        <button id="saveApiBaseBtn" class="hidden" type="button" tabindex="-1">保存</button>
+        <button id="saveAgentBaseBtn" class="hidden" type="button" tabindex="-1">保存</button>
+      </section>
+      <div class="about-notice"><strong>使用说明</strong><p>本系统仅用于认知健康初筛与日常记录，不替代医生诊断。如出现明显记忆下降、走失或生活能力变化，请及时就医。</p></div>
+    </div>
+    <div class="about-dialog-foot"><span>版本 v1.0.0</span><button id="aboutDialogConfirm" class="primary" type="button">知道了</button></div>
+  </dialog>
+
+  <script src="./app.js?v=20260722-2"></script>
 </body>
 </html>

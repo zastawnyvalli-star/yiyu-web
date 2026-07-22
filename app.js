@@ -101,3 +101,11 @@ const renderHistoryDashboard=renderHistory;
 renderHistory=function(){renderHistoryDashboard();renderTrendSummary();requestAnimationFrame(drawTrendDashboard)};
 draw=drawTrendDashboard;
 if(state.active==="history"){renderTrendSummary();requestAnimationFrame(drawTrendDashboard)}
+
+const aboutDialog=$("#aboutDialog");
+function openAboutDialog(){renderMine();if(aboutDialog?.showModal)aboutDialog.showModal();else aboutDialog?.setAttribute("open","")}
+function closeAboutDialog(){if(aboutDialog?.close)aboutDialog.close();else aboutDialog?.removeAttribute("open")}
+$("#aboutBtn").onclick=openAboutDialog;
+$("#aboutDialogClose").onclick=closeAboutDialog;
+$("#aboutDialogConfirm").onclick=closeAboutDialog;
+aboutDialog?.addEventListener("click",event=>{if(event.target===aboutDialog)closeAboutDialog()});
