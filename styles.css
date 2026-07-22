@@ -3821,3 +3821,340 @@ body.elderly .dimension-dots {
     background: #f7fbfb;
   }
 }
+
+/* Professional desktop report dashboard */
+@media (min-width: 1040px) {
+  body:not(.elderly) #reportView {
+    height: calc(100vh - 136px);
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #eef3f4;
+  }
+
+  body:not(.elderly) #reportView #reportContent {
+    height: 100%;
+    max-height: none;
+    padding: 18px 20px 28px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    background: #eef3f4;
+  }
+
+  body:not(.elderly) #reportView .report-head {
+    min-height: 158px;
+    margin: 0 0 14px;
+    padding: 22px 26px;
+    gap: 24px;
+    border: 1px solid #d4e2e5;
+    border-radius: 8px;
+    background:
+      linear-gradient(110deg, rgba(255,255,255,.98), rgba(242,250,249,.96));
+    box-shadow: 0 8px 24px rgba(45, 83, 98, .07);
+  }
+
+  body:not(.elderly) #reportView .report-head::before {
+    width: 5px;
+    border-radius: 8px 0 0 8px;
+    background: #4eb4ad;
+  }
+
+  body:not(.elderly) #reportView .report-head > div:first-child {
+    min-width: 0;
+  }
+
+  body:not(.elderly) #reportView .report-head .warn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    margin-bottom: 8px;
+    padding: 3px 10px;
+    border: 1px solid #f1c9c7;
+    border-radius: 5px;
+    background: #fff6f5;
+    color: #a13d38;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  body:not(.elderly) #reportView .report-head h2 {
+    margin-bottom: 3px;
+    color: #183b49;
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  body:not(.elderly) #reportView #reportDate {
+    color: #71828e;
+    font-size: 14px;
+  }
+
+  body:not(.elderly) #reportView #riskHint {
+    max-width: 920px;
+    margin-top: 7px;
+    color: #425d6b;
+    font-size: 15px;
+    line-height: 1.65;
+    text-align: left;
+  }
+
+  body:not(.elderly) #reportView .score {
+    width: 126px;
+    height: 126px;
+    min-width: 126px;
+    flex-basis: 126px;
+    border: 8px solid #bcefe5;
+    background: #fff;
+    box-shadow: inset 0 0 0 5px #f2fbf9;
+  }
+
+  body:not(.elderly) #reportView .score:hover {
+    transform: none;
+  }
+
+  body:not(.elderly) #reportView .score strong {
+    font-size: 34px;
+  }
+
+  body:not(.elderly) #reportView #riskText {
+    font-size: 13px;
+  }
+
+  body:not(.elderly) #reportView .cards {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  body:not(.elderly) #reportView .cards .panel {
+    min-width: 0;
+    padding: 20px 22px;
+    border: 1px solid #d5e2e5;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(49, 84, 98, .06);
+  }
+
+  body:not(.elderly) #reportView .cards .panel h3 {
+    margin: 0 0 14px;
+    color: #193d4b;
+    font-size: 19px;
+    line-height: 1.35;
+  }
+
+  body:not(.elderly) #reportView .cards .panel h3::before {
+    width: 4px;
+    height: 19px;
+    border-radius: 2px;
+    background: #4eb4ad;
+  }
+
+  body:not(.elderly) #reportView .cards > article:nth-child(1) {
+    grid-column: span 7;
+  }
+
+  body:not(.elderly) #reportView .cards > article:nth-child(2) {
+    grid-column: span 5;
+  }
+
+  body:not(.elderly) #reportView .cards > article:nth-child(3) {
+    grid-column: span 4;
+  }
+
+  body:not(.elderly) #reportView .cards > article:nth-child(4) {
+    grid-column: span 8;
+  }
+
+  body:not(.elderly) #reportView .cards > article:nth-child(5) {
+    grid-column: span 7;
+  }
+
+  body:not(.elderly) #reportView .cards > article:nth-child(6) {
+    grid-column: span 5;
+  }
+
+  body:not(.elderly) #reportView .cards > article:nth-child(7) {
+    grid-column: 1 / -1;
+  }
+
+  body:not(.elderly) #reportView .voice-summary {
+    border-left: 4px solid #4eb4ad;
+    background: linear-gradient(135deg, #fff, #f5fcfa);
+  }
+
+  body:not(.elderly) #reportView .voice-summary #elderVoiceText {
+    color: #3b5663;
+    font-size: 15px;
+    line-height: 1.8;
+    text-align: left;
+  }
+
+  body:not(.elderly) #reportView .section-title-row {
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  body:not(.elderly) #reportView .big-play {
+    min-height: 42px;
+    padding: 0 18px;
+    border-radius: 7px;
+    background: #237f91;
+    box-shadow: none;
+    font-size: 15px;
+  }
+
+  body:not(.elderly) #reportView .action-card {
+    border-left-width: 4px;
+  }
+
+  body:not(.elderly) #reportView .action-level {
+    min-height: 30px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+
+  body:not(.elderly) #reportView #actionAdvice,
+  body:not(.elderly) #reportView #actionSteps {
+    color: #405a67;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: left;
+  }
+
+  body:not(.elderly) #reportView #actionSteps {
+    margin: 10px 0 0;
+    padding-left: 1.35em;
+  }
+
+  body:not(.elderly) #reportView .bars {
+    gap: 15px;
+  }
+
+  body:not(.elderly) #reportView .bar-meta {
+    color: #425d6a;
+    font-size: 14px;
+  }
+
+  body:not(.elderly) #reportView .bar-track {
+    height: 7px;
+    margin-top: 5px;
+    background: #e8eff1;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #reportView .bar-fill {
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #reportView .subgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+  }
+
+  body:not(.elderly) #reportView .sub-score {
+    min-height: 64px;
+    padding: 10px 2px;
+    border: 0;
+    border-bottom: 1px solid #e2eaec;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #reportView .sub-score:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  body:not(.elderly) #reportView .sub-score strong {
+    color: #294b59;
+    font-size: 14px;
+  }
+
+  body:not(.elderly) #reportView .sub-score span {
+    font-size: 12px;
+  }
+
+  body:not(.elderly) #reportView .sub-score b {
+    color: #176c7d;
+    font-size: 16px;
+  }
+
+  body:not(.elderly) #reportView #observations,
+  body:not(.elderly) #reportView #suggestions {
+    margin: 0;
+    padding-left: 1.25em;
+    color: #405965;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  body:not(.elderly) #reportView #suggestions {
+    margin-top: 10px;
+  }
+
+  body:not(.elderly) #reportView .clinic-search {
+    grid-template-columns: minmax(0, 1fr) 88px 76px;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  body:not(.elderly) #reportView .clinic-search input,
+  body:not(.elderly) #reportView .clinic-search button {
+    height: 42px;
+    min-height: 42px;
+    border-radius: 7px;
+    font-size: 14px;
+  }
+
+  body:not(.elderly) #reportView .clinic-item {
+    min-height: 70px;
+    padding: 11px 2px;
+    border-color: #e1e9eb;
+  }
+
+  body:not(.elderly) #reportView .clinic-item strong {
+    font-size: 15px;
+  }
+
+  body:not(.elderly) #reportView .clinic-item p,
+  body:not(.elderly) #reportView .clinic-item span {
+    font-size: 13px;
+    text-align: left;
+  }
+
+  body:not(.elderly) #reportView .clinic-actions {
+    min-width: 88px;
+    justify-content: flex-end;
+  }
+
+  body:not(.elderly) #reportView .clinic-actions a {
+    font-size: 14px;
+  }
+
+  body:not(.elderly) #reportView .report-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0 0;
+  }
+
+  body:not(.elderly) #reportView .report-actions .ghost {
+    min-height: 52px;
+    padding: 0 12px;
+    border: 1px solid #d2e1e4;
+    border-radius: 7px;
+    color: #236f7f;
+    background: #fff;
+    box-shadow: none;
+    font-size: 16px;
+  }
+
+  body:not(.elderly) #reportView #reportEmpty {
+    height: 100%;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
