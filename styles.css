@@ -5733,3 +5733,27 @@ body.elderly #reportView .ability-track {
 #screeningView .side .progress {
   display: none !important;
 }
+
+#reportView .sub-score.score-high b {
+  color: #15803d;
+  background: #edf9f1;
+}
+
+#reportView .sub-score.score-mid b {
+  color: #a16207;
+  background: #fff8db;
+}
+
+#reportView .sub-score.score-low b {
+  color: #c62828;
+  background: #fff0f0;
+}
+
+#reportView .sub-score.score-high b,
+#reportView .sub-score.score-mid b,
+#reportView .sub-score.score-low b {
+  min-width: 70px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  text-align: center;
+}

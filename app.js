@@ -143,6 +143,11 @@ if(state.report)renderReport();
 const updateSpeakButtonsWithSummary=updateSpeakButtons;
 updateSpeakButtons=function(){updateSpeakButtonsWithSummary();const button=$("#playSummaryBtn");if(!button)return;const playing=speakingKey==="report-summary";button.textContent=playing?"停止解读":"播放解读";button.classList.toggle("playing",playing)}
 $("#playSummaryBtn").onclick=()=>{if(!state.report)return;if(speakingKey==="report-summary"){stopSpeech();return}speak(summary(state.report),"report-summary")};
+
+function subScoreLevel(score){return score>=7?"score-high":score>=4?"score-mid":"score-low"}
+const renderReportWithScoreColors=renderReport;
+renderReport=function(){renderReportWithScoreColors();if(!state.report)return;$$(("#subItemScores .sub-score")).forEach((row,index)=>{const score=Number(state.report.subs[index]?.score||0);row.classList.remove("score-high","score-mid","score-low");row.classList.add(subScoreLevel(score))})}
+if(state.report)renderReport();
 if(state.active==="history")renderHistory();
 
 const roundNotice="这次聊天的轮数不固定，我会根据咱们交流的情况适时结束。";
